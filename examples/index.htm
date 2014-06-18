@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="../bower_components/tinycolor/tinycolor.js"></script>
+  <script src="../tinygradient.js"></script>
+  <script>
+    $(function() {
+      var grad = tinygradient('#00E5BC', '#BF0022', 9);
+      //grad = grad.reverse();
+      
+      $('#css').css({
+        'background': grad.css(null, 'to bottom'),
+        'height': '360px'
+      });
+      grad.rgb().forEach(function(color) {
+          $('#rgb').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
+      });
+      grad.hsv('short').forEach(function(color) {
+          $('#hsv').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
+      });
+      grad.hsv('long').forEach(function(color) {
+          $('#hsv2').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
+      });
+      
+      var grad = tinygradient(['red', 'blue', 'green', 'gold'], 19);
+      //grad = grad.reverse();
+      
+      $('#css-multiple').css({
+        'background': grad.css(null, 'to bottom'),
+        'height': '760px'
+      });
+      grad.rgb().forEach(function(color) {
+          $('#rgb-multiple').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
+      });
+      grad.hsv('short').forEach(function(color) {
+          $('#hsv-multiple').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
+      });
+      grad.hsv('long').forEach(function(color) {
+          $('#hsv2-multiple').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
+      });
+    });
+  </script>
+  
+  <style>
+    .out {
+      display:inline-block;
+      margin:0 10px;
+      min-width:50px;
+      vertical-align:top;
+    }
+    .out div {
+      height:40px;
+      color:white;
+      font-family:'Calibri';
+      padding:0 1em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="out" id="css"></div>
+  <div class="out" id="rgb"></div>
+  <div class="out" id="hsv"></div>
+  <div class="out" id="hsv2"></div>
+
+  <div class="out" id="css-multiple"></div>
+  <div class="out" id="rgb-multiple"></div>
+  <div class="out" id="hsv-multiple"></div>
+  <div class="out" id="hsv2-multiple"></div>
+
+</body>
+</html>
