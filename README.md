@@ -34,11 +34,11 @@ The colors are parsed with TinyColor, [multiple formats are accepted](https://gi
 
 ```javascript
 var gradient = tinygradient([
-  tinycolor('#ff0000'), // tinycolor object
-  {r: 0, g: 255, b: 0}, // RGB object
+  tinycolor('#ff0000'),       // tinycolor object
+  {r: 0, g: 255, b: 0},       // RGB object
   {h: 240: s: 1, v: 1, a: 1}, // HSVa object
-  'rgb(120, 120, 0)', // RGB CSS string
-  'gold' // named color
+  'rgb(120, 120, 0)',         // RGB CSS string
+  'gold'                      // named color
 ], 20);
 ```
 
@@ -47,21 +47,44 @@ var gradient = tinygradient([
 ```javascript
 // RGB interpolation
 var colorsRgb = gradient.rgb();
+```
+![rgb](images/rgb.png)
 
+```javascript
 // HSV clockwise interpolation
-var colorsHsv1 = gradient.hsv();
+var colorsHsv = gradient.hsv();
+```
+![hsv](images/hsv.png)
 
+```javascript
 // HSV counter-clockwise interpolation
-var colorsHsv2 = gradient.hsv(true);
+var colorsHsv = gradient.hsv(true);
+```
+![hsv2](images/hsv2.png)
 
+There are also two methods which will automatically choose between and clockwise and counter-clockwise.
+
+```javascript
 // HSV interpolation using shortest arc between colors
-var colorsHsv3 = gradient.hsv('short');
+var colorsHsv = gradient.hsv('short');
 
 // HSV interpolation using longest arc between colors
-var colorsHsv4 = gradient.hsv('long');
+var colorsHsv = gradient.hsv('long');
 ```
 
 Each function returns an array of TinyColor objects, [see available methods](https://github.com/bgrins/TinyColor/blob/master/README.md#methods).
+
+### Get CSS gradient string
+
+The `css` method will output a valid W3C string (without vendors prefix) to use with `background-image` css property.
+
+```javascript
+// linear gradient to right (default)
+var gradientStr = gradient.css();
+
+// radial gradient ellipse at top left
+var gradientStr = gradient.css('radial', 'farthest-corner ellipse at top left');
+```
 
 ### Reversing gradient
 

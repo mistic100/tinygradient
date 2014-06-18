@@ -3,74 +3,64 @@
 <head>
   <meta charset="utf-8">
   
+  <title>TinyGradient</title>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheet.css">
+  
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="../bower_components/tinycolor/tinycolor.js"></script>
   <script src="../tinygradient.js"></script>
   <script>
     $(function() {
-      var grad = tinygradient('#00E5BC', '#BF0022', 9);
-      //grad = grad.reverse();
+      function addExample(grad) {
+        var html = '<section class="col-md-12">';
       
-      $('#css').css({
-        'background': grad.css(null, 'to bottom'),
-        'height': '360px'
-      });
-      grad.rgb().forEach(function(color) {
-          $('#rgb').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
-      });
-      grad.hsv('short').forEach(function(color) {
-          $('#hsv').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
-      });
-      grad.hsv('long').forEach(function(color) {
-          $('#hsv2').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
-      });
-      
-      var grad = tinygradient(['red', 'blue', 'green', 'gold'], 19);
-      //grad = grad.reverse();
-      
-      $('#css-multiple').css({
-        'background': grad.css(null, 'to bottom'),
-        'height': '760px'
-      });
-      grad.rgb().forEach(function(color) {
-          $('#rgb-multiple').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
-      });
-      grad.hsv('short').forEach(function(color) {
-          $('#hsv-multiple').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
-      });
-      grad.hsv('long').forEach(function(color) {
-          $('#hsv2-multiple').append('<div style="background:'+ color.toHexString() +';">'+ color.toHexString() +'</div>');
-      });
+        // CSS
+        html+= '<article><h4>CSS reference</h4>';
+        html+= '<div class="out css" style="background:'+ grad.css() +';width:'+ (grad.steps*60) +'px;"></div>';
+        html+= '</article>';
+        
+        // RGB
+        html+= '<article><h4>RGB interpolation</h4>';
+        html+= '<div class="out rgb">';
+        grad.rgb().forEach(function(color) {
+            html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
+        });
+        html+= '</div></article>';
+        
+        // HSV
+        html+= '<article><h4>HSV short interpolation</h4>';
+        html+= '<div class="out hsv">';
+        grad.hsv('short').forEach(function(color) {
+            html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
+        });
+        html+= '</div></article>';
+        
+        // HSV2
+        html+= '<article><h4>HSV long interpolation</h4>';
+        html+= '<div class="out hsv2">';
+        grad.hsv('long').forEach(function(color) {
+            html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
+        });
+        html+= '</div></article>';
+        
+        html+= '</section>';
+        
+        $('.container').append(html);
+      }
+    
+      addExample(tinygradient('#00E5BC', '#BF0022', 9));
+      addExample(tinygradient(['red', 'blue', 'green', 'gold'], 15));
     });
   </script>
-  
-  <style>
-    .out {
-      display:inline-block;
-      margin:0 10px;
-      min-width:50px;
-      vertical-align:top;
-    }
-    .out div {
-      height:40px;
-      color:white;
-      font-family:'Calibri';
-      padding:0 1em;
-    }
-  </style>
 </head>
 
 <body>
 
-  <div class="out" id="css"></div>
-  <div class="out" id="rgb"></div>
-  <div class="out" id="hsv"></div>
-  <div class="out" id="hsv2"></div>
-
-  <div class="out" id="css-multiple"></div>
-  <div class="out" id="rgb-multiple"></div>
-  <div class="out" id="hsv-multiple"></div>
-  <div class="out" id="hsv2-multiple"></div>
-
+  <div class="container">
+    <h1>TinyGradient</h1>
+  </div>
+  
 </body>
 </html>
