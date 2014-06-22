@@ -1,7 +1,10 @@
 TinyGradient
 ============
 
-## JavaScript color generator
+[![Bower version](https://badge.fury.io/bo/tinygradient.svg)](http://badge.fury.io/bo/tinygradient)
+[![NPM version](https://badge.fury.io/js/tinygradient.svg)](http://badge.fury.io/js/tinygradient)
+
+## JavaScript gradient generator
 
 Easily generate color gradients with unlimited number of color stops and steps. 
  
@@ -11,7 +14,7 @@ Compatible with Require.js/AMD and NodeJS.
 
 ## Usage
 
-The gradient can be generate using RGB interpolation or HSV interpolation. HSV usually produces brighter colors.
+The gradient can be generate using RGB or HSV interpolation. HSV usually produces brighter colors.
 
 ### Initialize gradient
 
@@ -62,7 +65,7 @@ var colorsHsv = gradient.hsv(true);
 ```
 ![hsv2](images/hsv2.png)
 
-There are also two methods which will automatically choose between and clockwise and counter-clockwise.
+There are also two methods which will automatically choose between clockwise and counter-clockwise.
 
 ```javascript
 // HSV interpolation using shortest arc between colors
