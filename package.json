@@ -1,6 +1,6 @@
 {
     "name": "tinygradient",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "authors": [{
         "name": "Damien \"Mistic\" Sorel",
         "homepage": "http://www.strangeplanet.fr"
@@ -15,7 +15,8 @@
     "devDependencies": {
         "grunt": "~0.4.5",
         "grunt-contrib-uglify": "~0.4.0",
-        "mocha": "~1.20.1"
+        "grunt-contrib-jshint": "~0.10.0",
+        "grunt-mocha-test": "~0.11.0"
     },
     "keywords": [
         "color",
@@ -29,6 +30,6 @@
         "url": "https://github.com/mistic100/tinygradient/issues"
     },
     "scripts": {
-        "test": "mocha tests/*.js"
+        "test": "grunt test --force"
     }
 }

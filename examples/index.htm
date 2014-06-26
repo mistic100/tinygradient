@@ -13,7 +13,7 @@
   <script src="../tinygradient.js"></script>
   <script>
     $(function() {
-      function addExample(grad) {
+      function addExample(grad, steps) {
         var html = '<section class="col-md-12">';
       
         // CSS
@@ -24,7 +24,7 @@
         // RGB
         html+= '<article><h4>RGB interpolation</h4>';
         html+= '<div class="out rgb">';
-        grad.rgb().forEach(function(color) {
+        grad.rgb(steps).forEach(function(color) {
             html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
         });
         html+= '</div></article>';
@@ -32,7 +32,7 @@
         // HSV
         html+= '<article><h4>HSV short interpolation</h4>';
         html+= '<div class="out hsv">';
-        grad.hsv('short').forEach(function(color) {
+        grad.hsv(steps, 'short').forEach(function(color) {
             html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
         });
         html+= '</div></article>';
@@ -40,7 +40,7 @@
         // HSV2
         html+= '<article><h4>HSV long interpolation</h4>';
         html+= '<div class="out hsv2">';
-        grad.hsv('long').forEach(function(color) {
+        grad.hsv(steps, 'long').forEach(function(color) {
             html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
         });
         html+= '</div></article>';
@@ -50,8 +50,8 @@
         $('.container').append(html);
       }
     
-      addExample(tinygradient('#00E5BC', '#BF0022', 9));
-      addExample(tinygradient(['red', 'blue', 'green', 'gold'], 15));
+      addExample(tinygradient('#00E5BC', '#BF0022'), 9);
+      addExample(tinygradient(['red', 'blue', 'green', 'gold']), 15);
     });
   </script>
 </head>

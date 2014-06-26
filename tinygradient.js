@@ -116,63 +116,72 @@
             }
 
             return gradient;
+        },
+
+        /**
+         * Compute substeps between each colors
+         * @param {tinycolor[]} colors
+         * @param {Integer} steps
+         * @return {Integer[]}
+         */
+        substeps: function(colors, steps) {
+            // validation
+            steps = parseInt(steps);
+
+            if (isNaN(steps) || steps < 2) {
+                throw new Error('Invalid number of steps (< 2)');
+            }
+            if (steps < colors.length) {
+                throw new Error('Number of steps cannot be inferior to number of colors');
+            }
+
+            var substeps = [];
+
+            // we need even number of steps if odd number of colors (and reciprocally)
+            if ((colors.length+steps)%2 === 0) {
+                steps++;
+            }
+
+            var substep = Math.round(steps / (colors.length-1));
+            for (var i=0, l=colors.length; i<l-2; i++) {
+                substeps.push(substep);
+            }
+            substeps.push(steps - substep * (l-2) - 1);
+
+            return substeps;
         }
     };
 
     /**
      * @class tinygradient
-     * @param {...String|...tinycolor|String[]|tinycolor[]} colors
-     * @param {Integer} steps
+     * @param {mixed} colors
      */
-    var TinyGradient = function(colors, steps) {
+    var TinyGradient = function(colors) {
         // varargs
-        steps = parseInt(arguments[arguments.length-1]);
-        if (arguments.length == 2) {
+        if (arguments.length == 1) {
             if (!(arguments[0] instanceof Array)) {
                 throw new Error('Colors is not an array');
             }
-            colors = arguments[0]
+            colors = arguments[0];
         }
         else {
-            colors = Array.prototype.slice.call(arguments, 0, -1);
+            colors = Array.prototype.slice.call(arguments);
         }
 
         // if we are called as a function, call using new instead
         if (!(this instanceof TinyGradient)) {
-            return new TinyGradient(colors, steps);
+            return new TinyGradient(colors);
         }
 
         // validation
-        if (steps < 2 || steps == NaN) {
-            throw new Error('Invalid number of steps (< 2)');
-        }
         if (colors.length < 2) {
             throw new Error('Invalid number of colors (< 2)');
         }
-        if (steps < colors.length) {
-            throw new Error('Number of steps cannot be inferior to number of colors');
-        }
-
-        this.colors = colors;
-        this.steps = steps;
-        this.substeps = [];
 
         // create tinycolor objects
-        this.colors = this.colors.map(function(color) {
+        this.colors = colors.map(function(color) {
             return tinycolor(color);
         });
-
-        // compute substeps
-        // we need even number of steps if odd number of colors (and reciprocally)
-        if ((this.colors.length+this.steps)%2 == 0) {
-            this.steps++;
-        }
-        
-        var substep = Math.round(this.steps / (this.colors.length-1));
-        for (var i=0, l=this.colors.length; i<l-2; i++) {
-            this.substeps.push(substep);
-        }
-        this.substeps.push(this.steps - substep * (l-2) - 1);
     };
 
     /**
@@ -180,18 +189,20 @@
      * @return {tinygradient}
      */
     TinyGradient.prototype.reverse = function() {
-        return new TinyGradient(this.colors.reverse(), this.steps);
+        return new TinyGradient(this.colors.reverse());
     };
 
     /**
      * Generate gradient with RGBa interpolation
+     * @param {Integer} steps
      * @return {tinycolor[]}
      */
-    TinyGradient.prototype.rgb = function() {
-        var gradient = [];
+    TinyGradient.prototype.rgb = function(steps) {
+        var substeps = Utils.substeps(this.colors, steps),
+            gradient = [];
 
         for (var i=0, l=this.colors.length; i<l-1; i++) {
-            gradient = gradient.concat(Utils.rgb(this.colors[i], this.colors[i+1], this.substeps[i]));
+            gradient = gradient.concat(Utils.rgb(this.colors[i], this.colors[i+1], substeps[i]));
         }
 
         gradient.push(this.colors[l-1]);
@@ -201,6 +212,7 @@
 
     /**
      * Generate gradient with HSVa interpolation
+     * @param {Integer} steps
      * @param {Boolean|String} mode
      *    - false (default) to step in clockwise
      *    - true to step in trigonometric order
@@ -208,8 +220,9 @@
      *    - 'long' to use the longest way
      * @return {tinycolor[]}
      */
-    TinyGradient.prototype.hsv = function(mode) {
-        var inverse = !!mode,
+    TinyGradient.prototype.hsv = function(steps, mode) {
+        var substeps = Utils.substeps(this.colors, steps),
+            inverse = !!mode,
             parametrized = typeof mode === 'string',
             gradient = [],
             start, end, trig;
@@ -221,7 +234,7 @@
                 trig = (start.h < end.h && end.h-start.h < 180) || (start.h > end.h && start.h-end.h > 180);
             }
 
-            gradient = gradient.concat(Utils.hsv(this.colors[i], this.colors[i+1], this.substeps[i],
+            gradient = gradient.concat(Utils.hsv(this.colors[i], this.colors[i+1], substeps[i],
               (parametrized && mode=='long' && trig) ||(parametrized && mode=='short' && !trig) || (!parametrized && inverse)
             ));
         }
@@ -251,5 +264,5 @@
 
 
     // export
-    return TinyGradient
+    return TinyGradient;
 }));

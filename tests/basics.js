@@ -3,17 +3,26 @@ var tinygradient = require('../tinygradient.js'),
 
 describe('Basic gradients', function() {
     it('should throw an error on invalid steps/colors number', function() {
-        assert.throws(function() { tinygradient('red', 2) });
-        assert.throws(function() { tinygradient(['red'], 2) });
-        assert.throws(function() { tinygradient('red', 'blue', 1) });
-        assert.throws(function() { tinygradient('red', 'blue', 'green', 2) });
+        assert.throws(function() {
+            tinygradient('red');
+        });
+        assert.throws(function() {
+            tinygradient(['red']);
+        });
+        assert.throws(function() {
+            var grad = tinygradient('red', 'blue');
+            grad.rgb(1);
+        });
+        assert.throws(function() {
+            var grad = tinygradient('red', 'blue', 'green');
+            grad.rgb(2);
+        });
     });
     
     it('should accept varargs and array', function() {
-        var grad1 = tinygradient('red', 'green', 'blue', 'yellow', 'black', 20);
-        var grad2 = tinygradient(['red', 'green', 'blue', 'yellow', 'black'], 20);
+        var grad1 = tinygradient('red', 'green', 'blue', 'yellow', 'black');
+        var grad2 = tinygradient(['red', 'green', 'blue', 'yellow', 'black']);
        
-        assert.equal(grad1.steps, grad2.steps);
         assert.deepEqual(
           grad1.colors.map(function(c) { return c.toRgb(); }),
           grad2.colors.map(function(c) { return c.toRgb(); })
@@ -21,8 +30,8 @@ describe('Basic gradients', function() {
     });
     
     it('should generate 11 steps gradient from black to grey in RGB', function() {
-        var grad = tinygradient({r:0,g:0,b:0}, {r:100,g:100,b:100}, 11);
-        var res = grad.rgb();
+        var grad = tinygradient({r:0,g:0,b:0}, {r:100,g:100,b:100});
+        var res = grad.rgb(11);
 
         assert.equal(11, res.length);
         assert.deepEqual({r:0,g:0,b:0,a:1}, res[0].toRgb(), 'black');
@@ -36,8 +45,8 @@ describe('Basic gradients', function() {
           {h:120,s:1,v:1},
           {h:240,s:1,v:1},
           {h:0,s:1,v:1}
-        ], 13);
-        var res = grad.hsv();
+        ]);
+        var res = grad.hsv(13);
         
         assert.equal(13, res.length);
         assert.deepEqual({h:60,s:1,v:1,a:1}, res[2].toHsv(), 'yellow');
@@ -46,18 +55,19 @@ describe('Basic gradients', function() {
     });
     
     it('should generate CSS gradient command for 3 colors', function() {
-        var grad = tinygradient('#f00', '#0f0', '#00f', 10);
+        var grad = tinygradient('#f00', '#0f0', '#00f');
         var res = grad.css();
         assert.equal('linear-gradient(to right, rgb(255, 0, 0), rgb(0, 255, 0), rgb(0, 0, 255))', res, 'default');
         
-        grad = tinygradient('rgba(255,0,0,0.5)', 'rgba(0,255,0,0.5)', 'rgba(0,0,255,0.5)', 10);
+        grad = tinygradient('rgba(255,0,0,0.5)', 'rgba(0,255,0,0.5)', 'rgba(0,0,255,0.5)');
         res = grad.css('radial', 'ellipse farthest-corner');
         assert.equal('radial-gradient(ellipse farthest-corner, rgba(255, 0, 0, 0.5), rgba(0, 255, 0, 0.5), rgba(0, 0, 255, 0.5))', res, 'radial with alpha');
     });
     
     it('should increase number add on step if necessary', function() {
-        var grad = tinygradient('#f00', '#0f0', '#00f', 9);
+        var grad = tinygradient('#f00', '#0f0', '#00f');
+        var res = grad.rgb(9);
         
-        assert.equal(grad.steps, 10);
+        assert.equal(10, res.length);
     });
 });

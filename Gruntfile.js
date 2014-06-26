@@ -21,12 +21,39 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+
+        // jshint tests
+        jshint: {
+            lib: {
+                files: {
+                    src: [
+                        'tinygradient.js'
+                    ]
+                }
+            }
+        },
+
+        // mocha tests
+        mochaTest: {
+            unit: {
+                src: [
+                    'tests/*.js'
+                ]
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     grunt.registerTask('default', [
         'uglify'
+    ]);
+
+    grunt.registerTask('test', [
+        'mochaTest',
+        'jshint'
     ]);
 };
