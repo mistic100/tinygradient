@@ -4,7 +4,7 @@ TinyGradient
 [![Bower version](https://badge.fury.io/bo/tinygradient.svg)](http://badge.fury.io/bo/tinygradient)
 [![NPM version](https://badge.fury.io/js/tinygradient.svg)](http://badge.fury.io/js/tinygradient)
 
-## JavaScript gradient generator
+## JavaScript gradients generator
 
 Easily generate color gradients with unlimited number of color stops and steps. 
  
@@ -18,19 +18,18 @@ The gradient can be generate using RGB or HSV interpolation. HSV usually produce
 
 ### Initialize gradient
 
-The `tinygradient` constructor takes a list or an array of colors steps and a number of steps.
-> The generated gradients might have one more step in certain conditions.
+The `tinygradient` constructor takes a list or an array of colors steps.
 
 ```javascript
 // using varargs
-var gradient = tinygradient('red', 'green', 'blue', 12);
+var gradient = tinygradient('red', 'green', 'blue');
 
 // using array
 var gradient = tinygradient([
   '#ff0000',
   '#00ff00',
   '#0000ff'
-], 12);
+]);
 ```
 
 The colors are parsed with TinyColor, [multiple formats are accepted](https://github.com/bgrins/TinyColor/blob/master/README.md#accepted-string-input).
@@ -42,26 +41,29 @@ var gradient = tinygradient([
   {h: 240: s: 1, v: 1, a: 1}, // HSVa object
   'rgb(120, 120, 0)',         // RGB CSS string
   'gold'                      // named color
-], 20);
+]);
 ```
 
 ### Generate gradient
 
+Each method takes at least the number of desired steps.
+> The generated gradients might have one more step in certain conditions.
+
 ```javascript
 // RGB interpolation
-var colorsRgb = gradient.rgb();
+var colorsRgb = gradient.rgb(9);
 ```
 ![rgb](images/rgb.png)
 
 ```javascript
 // HSV clockwise interpolation
-var colorsHsv = gradient.hsv();
+var colorsHsv = gradient.hsv(9);
 ```
 ![hsv](images/hsv.png)
 
 ```javascript
 // HSV counter-clockwise interpolation
-var colorsHsv = gradient.hsv(true);
+var colorsHsv = gradient.hsv(9, true);
 ```
 ![hsv2](images/hsv2.png)
 
@@ -69,13 +71,13 @@ There are also two methods which will automatically choose between clockwise and
 
 ```javascript
 // HSV interpolation using shortest arc between colors
-var colorsHsv = gradient.hsv('short');
+var colorsHsv = gradient.hsv(9, 'short');
 
 // HSV interpolation using longest arc between colors
-var colorsHsv = gradient.hsv('long');
+var colorsHsv = gradient.hsv(9, 'long');
 ```
 
-Each function returns an array of TinyColor objects, [see available methods](https://github.com/bgrins/TinyColor/blob/master/README.md#methods).
+Each method returns an array of TinyColor objects, [see available methods](https://github.com/bgrins/TinyColor/blob/master/README.md#methods).
 
 ### Get CSS gradient string
 

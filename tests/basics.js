@@ -24,8 +24,8 @@ describe('Basic gradients', function() {
         var grad2 = tinygradient(['red', 'green', 'blue', 'yellow', 'black']);
        
         assert.deepEqual(
-          grad1.colors.map(function(c) { return c.toRgb(); }),
-          grad2.colors.map(function(c) { return c.toRgb(); })
+          grad1.stops.map(function(c) { return c.color.toRgb(); }),
+          grad2.stops.map(function(c) { return c.color.toRgb(); })
         );
     });
     
