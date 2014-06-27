@@ -18,7 +18,7 @@ The gradient can be generate using RGB or HSV interpolation. HSV usually produce
 
 ### Initialize gradient
 
-The `tinygradient` constructor takes a list or an array of colors steps.
+The `tinygradient` constructor takes a list or an array of colors stops.
 
 ```javascript
 // using varargs
@@ -41,6 +41,16 @@ var gradient = tinygradient([
   {h: 240: s: 1, v: 1, a: 1}, // HSVa object
   'rgb(120, 120, 0)',         // RGB CSS string
   'gold'                      // named color
+]);
+```
+
+You can also specify the position of each color stop (between `0` and `1`). If not position is specified, stops are distributed equidistantly.
+
+```javascript
+var gradient = tinygradient([
+  {color: '#d8e0de', pos: 0},
+  {color: '#255B53', pos: 0.8},
+  {color: '#000000', pos: 1}
 ]);
 ```
 

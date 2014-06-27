@@ -13,12 +13,13 @@
   <script src="../tinygradient.js"></script>
   <script>
     $(function() {
-      function addExample(grad, steps) {
+      function addExample(colors, steps) {
+        var grad = tinygradient(colors);
         var html = '<section class="col-md-12">';
       
         // CSS
         html+= '<article><h4>CSS reference</h4>';
-        html+= '<div class="out css" style="background:'+ grad.css() +';width:'+ (grad.steps*60) +'px;"></div>';
+        html+= '<div class="out css" style="background:'+ grad.css() +';width:'+ (steps*60) +'px;"></div>';
         html+= '</article>';
         
         // RGB
@@ -50,8 +51,13 @@
         $('.container').append(html);
       }
     
-      addExample(tinygradient('#00E5BC', '#BF0022'), 9);
-      addExample(tinygradient(['red', 'blue', 'green', 'gold']), 15);
+      addExample(['#00E5BC', '#BF0022'], 9);
+      addExample(['red', 'blue', 'green', 'gold'], 15);
+      addExample([
+        {color: '#d8e0de', pos: 0},
+        {color: '#255B53', pos: 0.8},
+        {color: '#000000', pos: 1}
+      ], 12);
     });
   </script>
 </head>

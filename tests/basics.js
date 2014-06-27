@@ -57,17 +57,10 @@ describe('Basic gradients', function() {
     it('should generate CSS gradient command for 3 colors', function() {
         var grad = tinygradient('#f00', '#0f0', '#00f');
         var res = grad.css();
-        assert.equal('linear-gradient(to right, rgb(255, 0, 0), rgb(0, 255, 0), rgb(0, 0, 255))', res, 'default');
+        assert.equal('linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(0, 255, 0) 50%, rgb(0, 0, 255) 100%)', res, 'default');
         
         grad = tinygradient('rgba(255,0,0,0.5)', 'rgba(0,255,0,0.5)', 'rgba(0,0,255,0.5)');
         res = grad.css('radial', 'ellipse farthest-corner');
-        assert.equal('radial-gradient(ellipse farthest-corner, rgba(255, 0, 0, 0.5), rgba(0, 255, 0, 0.5), rgba(0, 0, 255, 0.5))', res, 'radial with alpha');
-    });
-    
-    it('should increase number add on step if necessary', function() {
-        var grad = tinygradient('#f00', '#0f0', '#00f');
-        var res = grad.rgb(9);
-        
-        assert.equal(10, res.length);
+        assert.equal('radial-gradient(ellipse farthest-corner, rgba(255, 0, 0, 0.5) 0%, rgba(0, 255, 0, 0.5) 50%, rgba(0, 0, 255, 0.5) 100%)', res, 'radial with alpha');
     });
 });

@@ -137,18 +137,26 @@
                 throw new Error('Number of steps cannot be inferior to number of stops');
             }
 
+            // compute substeps from stop positions
             var substeps = [];
 
-            // we need even number of steps if odd number of stops (and reciprocally)
-            if ((l+steps)%2 === 0) {
-                steps++;
+            for (var i=1; i<l; i++) {
+                var step = (steps-1) * (stops[i].pos-stops[i-1].pos);
+                substeps.push(Math.max(1, Math.round(step)));
             }
 
-            var substep = Math.round(steps / (l-1));
-            for (var i=0; i<l-2; i++) {
-                substeps.push(substep);
+            // adjust number of steps
+            var totalSubsteps = 1;
+            for (var n=l-1; n--; ) totalSubsteps+= substeps[n];
+
+            if (totalSubsteps < steps) {
+                var min = Math.min.apply(null, substeps);
+                substeps[substeps.indexOf(min)]++;
             }
-            substeps.push(steps - substep * (l-2) - 1);
+            else if (totalSubsteps > steps) {
+                var max = Math.max.apply(null, substeps);
+                substeps[substeps.indexOf(max)]--;
+            }
 
             return substeps;
         }
@@ -180,12 +188,12 @@
             throw new Error('Invalid number of stops (< 2)');
         }
 
-        var havingPositions = !!stops[0].pos,
+        var havingPositions = stops[0].pos !== undefined,
             l = stops.length,
             p = -1;
         // create tinycolor objects and clean positions
         this.stops = stops.map(function(stop, i) {
-            var hasPosition = !!stop.pos;
+            var hasPosition = stop.pos !== undefined;
             if (havingPositions ^ hasPosition) {
                 throw new Error('Cannot mix positionned and not posionned color stops');
             }
@@ -193,7 +201,10 @@
             if (hasPosition) {
                 stop.color = tinycolor(stop.color);
 
-                if (stop.pos <= p) {
+                if (stop.pos < 0 || stop.pos > 1) {
+                    throw new Error('Color stops positions must be between 0 and 1');
+                }
+                else if (stop.pos <= p) {
                     throw new Error('Color stops positions are not ordered');
                 }
                 p = stop.pos;
@@ -207,6 +218,19 @@
 
             return stop;
         });
+
+        if (this.stops[0].pos !== 0) {
+            this.stops.unshift({
+                color: this.stops[1].color,
+                pos: 0
+            });
+        }
+        if (this.stops[this.stops.length-1].pos !== 1) {
+            this.stops.push({
+                color: this.stops[this.stops.length-2].color,
+                pos: 1
+            });
+        }
     };
 
     /**
@@ -281,7 +305,7 @@
 
         var css = mode + '-gradient(' + direction;
         this.stops.forEach(function(stop) {
-            css+= ', ' + stop.color.toRgbString();
+            css+= ', ' + stop.color.toRgbString() + ' ' + (stop.pos*100) + '%';
         });
         css+= ')';
         return css;
