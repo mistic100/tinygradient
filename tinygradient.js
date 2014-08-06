@@ -88,10 +88,10 @@
          * @param {Object} stop1
          * @param {Object} stop2
          * @param {Integer} steps
-         * @param {Boolean} inverse - true to step in trigonometric order
+         * @param {Boolean} trigonometric - true to step in trigonometric order
          * @param {tinycolor[]} color1 included, color2 excluded
          */
-        hsv: function(stop1, stop2, steps, inverse) {
+        hsv: function(stop1, stop2, steps, trigonometric) {
             var start = stop1.color.toHsv(),
                 end = stop2.color.toHsv(),
                 gradient = [stop1.color],
@@ -99,16 +99,16 @@
                 diff, color;
 
             // recompute hue
-            if ((start.h <= end.h && !inverse) || (start.h >= end.h && inverse)) {
+            if ((start.h <= end.h && !trigonometric) || (start.h >= end.h && trigonometric)) {
                 diff = end.h-start.h;
             }
-            else if (inverse) {
+            else if (trigonometric) {
                 diff = 360-end.h+start.h;
             }
             else {
                 diff = 360-start.h+end.h;
             }
-            step.h = Math.pow(-1, inverse) * Math.abs(diff)*1.0 / steps;
+            step.h = Math.pow(-1, trigonometric) * Math.abs(diff)*1.0 / steps;
 
             for (var i=1; i<steps; i++) {
                 color = Utils.interpolate(step, start, i, Utils.hsva_max);
@@ -221,13 +221,13 @@
 
         if (this.stops[0].pos !== 0) {
             this.stops.unshift({
-                color: this.stops[1].color,
+                color: this.stops[0].color,
                 pos: 0
             });
         }
         if (this.stops[this.stops.length-1].pos !== 1) {
             this.stops.push({
-                color: this.stops[this.stops.length-2].color,
+                color: this.stops[this.stops.length-1].color,
                 pos: 1
             });
         }
@@ -262,8 +262,8 @@
     /**
      * Generate gradient with HSVa interpolation
      * @param {Integer} steps
-     * @param {Boolean|String} mode
-     *    - false (default) to step in clockwise
+     * @param {Boolean|String} [mode=false]
+     *    - false to step in clockwise
      *    - true to step in trigonometric order
      *    - 'short' to use the shortest way
      *    - 'long' to use the longest way
@@ -271,21 +271,28 @@
      */
     TinyGradient.prototype.hsv = function(steps, mode) {
         var substeps = Utils.substeps(this.stops, steps),
-            inverse = !!mode,
+            trigonometric = mode === true,
             parametrized = typeof mode === 'string',
             gradient = [],
             start, end, trig;
 
         for (var i=0, l=this.stops.length; i<l-1; i++) {
+            start = this.stops[i].color.toHsv();
+            end = this.stops[i+1].color.toHsv();
+                
             if (parametrized) {
-                start = this.stops[i].color.toHsv();
-                end = this.stops[i+1].color.toHsv();
                 trig = (start.h < end.h && end.h-start.h < 180) || (start.h > end.h && start.h-end.h > 180);
             }
-
-            gradient = gradient.concat(Utils.hsv(this.stops[i], this.stops[i+1], substeps[i],
-              (parametrized && mode=='long' && trig) ||(parametrized && mode=='short' && !trig) || (!parametrized && inverse)
-            ));
+            
+            // rgb interpolation if one of the steps in grayscale
+            if (start.s===0 || end.s===0) {
+                gradient = gradient.concat(Utils.rgb(this.stops[i], this.stops[i+1], substeps[i]));
+            }
+            else {
+                gradient = gradient.concat(Utils.hsv(this.stops[i], this.stops[i+1], substeps[i],
+                  (mode==='long' && trig) || (mode==='short' && !trig) || (!parametrized && trigonometric)
+                ));
+            }
         }
 
         gradient.push(this.stops[l-1].color);

@@ -44,7 +44,7 @@ var gradient = tinygradient([
 ]);
 ```
 
-You can also specify the position of each color stop (between `0` and `1`). If not position is specified, stops are distributed equidistantly.
+You can also specify the position of each color stop (between `0` and `1`). If no position is specified, stops are distributed equidistantly.
 
 ```javascript
 var gradient = tinygradient([
@@ -63,19 +63,19 @@ Each method takes at least the number of desired steps.
 // RGB interpolation
 var colorsRgb = gradient.rgb(9);
 ```
-![rgb](images/rgb.png)
+![rgb](https://raw.githubusercontent.com/mistic100/tinygradient/master/images/rgb.png)
 
 ```javascript
 // HSV clockwise interpolation
 var colorsHsv = gradient.hsv(9);
 ```
-![hsv](images/hsv.png)
+![hsv](https://raw.githubusercontent.com/mistic100/tinygradient/master/images/hsv.png)
 
 ```javascript
 // HSV counter-clockwise interpolation
 var colorsHsv = gradient.hsv(9, true);
 ```
-![hsv2](images/hsv2.png)
+![hsv2](https://raw.githubusercontent.com/mistic100/tinygradient/master/images/hsv2.png)
 
 There are also two methods which will automatically choose between clockwise and counter-clockwise.
 
