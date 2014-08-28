@@ -10,7 +10,7 @@
     "homepage": "https://github.com/mistic100/tinygradient",
     "main": "tinygradient.js",
     "dependencies": {
-        "tinycolor": "0.11.x"
+        "tinycolor": "~1.0.0"
     },
     "keywords": [
         "color",
