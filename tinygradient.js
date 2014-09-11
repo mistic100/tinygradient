@@ -238,7 +238,16 @@
      * @return {tinygradient}
      */
     TinyGradient.prototype.reverse = function() {
-        return new TinyGradient(this.stops.reverse());
+        var stops = [];
+
+        this.stops.forEach(function(stop) {
+            stops.push({
+                color: stop.color,
+                pos: 1 - stop.pos
+            });
+        });
+
+        return new TinyGradient(stops.reverse());
     };
 
     /**
@@ -316,6 +325,42 @@
         });
         css+= ')';
         return css;
+    };
+
+
+    /**
+     * Initialize and create gradient with RGBa interpolation
+     * @see TinyGradient::rgb
+     */
+    TinyGradient.rgb = function(colors, steps) {
+        var colors = Array.prototype.slice.call(arguments),
+            steps = colors.pop();
+
+        return TinyGradient.apply(null, colors).rgb(steps);
+    };
+
+    /**
+     * Initialize and create gradient with HSVa interpolation
+     * @see TinyGradient::hsv
+     */
+    TinyGradient.hsv = function(colors, steps, mode) {
+        var colors = Array.prototype.slice.call(arguments),
+            mode = colors.pop(),
+            steps = colors.pop();
+
+        return TinyGradient.apply(null, colors).hsv(steps, mode);
+    };
+
+    /**
+     * Initialize and generate CSS3 command for gradient
+     * @see TinyGradient::css
+     */
+    TinyGradient.css = function(colors, mode, direction) {
+        var colors = Array.prototype.slice.call(arguments),
+            direction = colors.pop(),
+            mode = colors.pop();
+
+        return TinyGradient.apply(null, colors).css(mode, direction);
     };
 
 

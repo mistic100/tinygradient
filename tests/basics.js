@@ -29,6 +29,16 @@ describe('Basic gradients', function() {
         );
     });
     
+    it('should reverse gradient', function() {
+        var grad1 = tinygradient('red', 'green', 'blue', 'yellow', 'black');
+        var grad2 = grad2.reverse();
+       
+        assert.deepEqual(
+          grad1.stops.map(function(c) { return c.color.toRgb(); }),
+          grad2.stops.reverse().map(function(c) { return c.color.toRgb(); })
+        );
+    });
+    
     it('should generate 11 steps gradient from black to grey in RGB', function() {
         var grad = tinygradient({r:0,g:0,b:0}, {r:100,g:100,b:100});
         var res = grad.rgb(11);
