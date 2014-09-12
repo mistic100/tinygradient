@@ -31,7 +31,7 @@ describe('Basic gradients', function() {
     
     it('should reverse gradient', function() {
         var grad1 = tinygradient('red', 'green', 'blue', 'yellow', 'black');
-        var grad2 = grad2.reverse();
+        var grad2 = grad1.reverse();
        
         assert.deepEqual(
           grad1.stops.map(function(c) { return c.color.toRgb(); }),

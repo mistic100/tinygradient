@@ -333,8 +333,8 @@
      * @see TinyGradient::rgb
      */
     TinyGradient.rgb = function(colors, steps) {
-        var colors = Array.prototype.slice.call(arguments),
-            steps = colors.pop();
+        colors = Array.prototype.slice.call(arguments);
+        steps = colors.pop();
 
         return TinyGradient.apply(null, colors).rgb(steps);
     };
@@ -344,9 +344,9 @@
      * @see TinyGradient::hsv
      */
     TinyGradient.hsv = function(colors, steps, mode) {
-        var colors = Array.prototype.slice.call(arguments),
-            mode = colors.pop(),
-            steps = colors.pop();
+        colors = Array.prototype.slice.call(arguments);
+        mode = colors.pop();
+        steps = colors.pop();
 
         return TinyGradient.apply(null, colors).hsv(steps, mode);
     };
@@ -356,9 +356,9 @@
      * @see TinyGradient::css
      */
     TinyGradient.css = function(colors, mode, direction) {
-        var colors = Array.prototype.slice.call(arguments),
-            direction = colors.pop(),
-            mode = colors.pop();
+        colors = Array.prototype.slice.call(arguments);
+        direction = colors.pop();
+        mode = colors.pop();
 
         return TinyGradient.apply(null, colors).css(mode, direction);
     };
