@@ -147,15 +147,19 @@
 
             // adjust number of steps
             var totalSubsteps = 1;
-            for (var n=l-1; n--; ) totalSubsteps+= substeps[n];
+            for (var n=l-1; n--;) totalSubsteps+= substeps[n];
 
-            if (totalSubsteps < steps) {
-                var min = Math.min.apply(null, substeps);
-                substeps[substeps.indexOf(min)]++;
-            }
-            else if (totalSubsteps > steps) {
-                var max = Math.max.apply(null, substeps);
-                substeps[substeps.indexOf(max)]--;
+            while (totalSubsteps != steps) {
+                if (totalSubsteps < steps) {
+                    var min = Math.min.apply(null, substeps);
+                    substeps[substeps.indexOf(min)]++;
+                    totalSubsteps++;
+                }
+                else {
+                    var max = Math.max.apply(null, substeps);
+                    substeps[substeps.indexOf(max)]--;
+                    totalSubsteps--;
+                }
             }
 
             return substeps;
