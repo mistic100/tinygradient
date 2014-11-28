@@ -203,7 +203,10 @@
             }
 
             if (hasPosition) {
-                stop.color = tinycolor(stop.color);
+                stop = {
+                    color: tinycolor(stop.color),
+                    pos: stop.pos
+                };
 
                 if (stop.pos < 0 || stop.pos > 1) {
                     throw new Error('Color stops positions must be between 0 and 1');
