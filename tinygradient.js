@@ -1,8 +1,8 @@
 /*!
-* TinyGradient
-* Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
-* Licensed under MIT (http://opensource.org/licenses/MIT)
-*/
+ * TinyGradient 0.3.1
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
+ */
 
 (function(root, factory) {
     if (typeof module !== "undefined" && module.exports) {
