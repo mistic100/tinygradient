@@ -38,7 +38,7 @@ The colors are parsed with TinyColor, [multiple formats are accepted](https://gi
 var gradient = tinygradient([
   tinycolor('#ff0000'),       // tinycolor object
   {r: 0, g: 255, b: 0},       // RGB object
-  {h: 240: s: 1, v: 1, a: 1}, // HSVa object
+  {h: 240, s: 1, v: 1, a: 1}, // HSVa object
   'rgb(120, 120, 0)',         // RGB CSS string
   'gold'                      // named color
 ]);
