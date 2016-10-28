@@ -1,72 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>TinyGradient</title>
-  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="stylesheet.css">
-  
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="../bower_components/tinycolor/tinycolor.js"></script>
-  <script src="../tinygradient.js"></script>
-  <script>
-    $(function() {
-      function addExample(colors, steps) {
-        var grad = tinygradient(colors);
-        var html = '<section class="col-md-12">';
-      
-        // CSS
-        html+= '<article><h4>CSS reference</h4>';
-        html+= '<div class="out css" style="background:'+ grad.css() +';width:'+ (steps*60) +'px;"></div>';
-        html+= '</article>';
-        
-        // RGB
-        html+= '<article><h4>RGB interpolation</h4>';
-        html+= '<div class="out rgb">';
-        grad.rgb(steps).forEach(function(color) {
-            html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
-        });
-        html+= '</div></article>';
-        
-        // HSV
-        html+= '<article><h4>HSV short interpolation</h4>';
-        html+= '<div class="out hsv">';
-        grad.hsv(steps, 'short').forEach(function(color) {
-            html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
-        });
-        html+= '</div></article>';
-        
-        // HSV2
-        html+= '<article><h4>HSV long interpolation</h4>';
-        html+= '<div class="out hsv2">';
-        grad.hsv(steps, 'long').forEach(function(color) {
-            html+= '<span style="background:'+ color.toRgbString() +';" title="'+ color.toHexString() +'"></span>';
-        });
-        html+= '</div></article>';
-        
-        html+= '</section>';
-        
-        $('.container').append(html);
-      }
-    
-      addExample(['#00E5BC', '#BF0022'], 9);
-      addExample(['red', 'blue', 'green', 'gold'], 15);
-      addExample([
-        {color: '#d8e0de', pos: 0},
-        {color: '#255B53', pos: 0.8},
-        {color: '#000000', pos: 1}
-      ], 12);
-    });
-  </script>
+    <meta charset="utf-8">
+
+    <title>TinyGradient</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #eee;
+        }
+
+        section {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 15px 0;
+            padding: 0 10px 10px 10px;
+        }
+
+        article div {
+            height: 40px;
+            margin-bottom: 20px;
+        }
+
+        article div.css {
+            margin-bottom: 0;
+        }
+
+        article div span {
+            display: inline-block;
+            position: relative;
+            height: 40px;
+            width: 60px;
+        }
+
+        article div span:after {
+            content: attr(title);
+            position: absolute;
+            bottom: -15px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
     <h1>TinyGradient</h1>
-  </div>
-  
+</div>
+
+<script src="../bower_components/tinycolor/tinycolor.js"></script>
+<script src="../tinygradient.js"></script>
+
+<script>
+    function addExample(colors, steps) {
+        var grad = tinygradient(colors);
+        var html = '<section class="col-md-12">';
+
+        // CSS
+        html += '<article><h4>CSS reference</h4>';
+        html += '<div class="out css" style="background:' + grad.css() + ';width:' + (steps * 60) + 'px;"></div>';
+        html += '</article>';
+
+        // RGB
+        html += '<article><h4>RGB interpolation</h4>';
+        html += '<div class="out rgb">';
+        grad.rgb(steps).forEach(function(color) {
+            html += '<span style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></span>';
+        });
+        html += '</div></article>';
+
+        // HSV
+        html += '<article><h4>HSV short interpolation</h4>';
+        html += '<div class="out hsv">';
+        grad.hsv(steps, 'short').forEach(function(color) {
+            html += '<span style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></span>';
+        });
+        html += '</div></article>';
+
+        // HSV2
+        html += '<article><h4>HSV long interpolation</h4>';
+        html += '<div class="out hsv2">';
+        grad.hsv(steps, 'long').forEach(function(color) {
+            html += '<span style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></span>';
+        });
+        html += '</div></article>';
+
+        html += '</section>';
+
+        document.querySelector('.container').innerHTML += html;
+    }
+
+    addExample(['#00E5BC', '#BF0022'], 9);
+    addExample(['red', 'blue', 'green', 'gold'], 15);
+    addExample([
+        { color: '#d8e0de', pos: 0 },
+        { color: '#255B53', pos: 0.8 },
+        { color: '#000000', pos: 1 }
+    ], 12);
+</script>
+
 </body>
 </html>

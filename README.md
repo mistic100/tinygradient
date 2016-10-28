@@ -1,8 +1,8 @@
 TinyGradient
 ============
 
-[![Bower version](https://badge.fury.io/bo/tinygradient.svg)](http://badge.fury.io/bo/tinygradient)
-[![NPM version](https://badge.fury.io/js/tinygradient.svg)](http://badge.fury.io/js/tinygradient)
+[![Bower version](https://img.shields.io/bower/v/tinygradient.svg?style=flat-square)](https://github.com/mistic100/tinygradient)
+[![NPM version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
 
 ## JavaScript gradients generator
 

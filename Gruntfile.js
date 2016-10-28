@@ -15,31 +15,22 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>\n'
             },
             dist: {
-                files: {
-                    'tinygradient.min.js': [
-                        'tinygradient.js'
-                    ]
-                }
+                src: 'tinygradient.js',
+                dest: 'tinygradient.min.js'
             }
         },
 
         // jshint tests
         jshint: {
             lib: {
-                files: {
-                    src: [
-                        'tinygradient.js'
-                    ]
-                }
+                src: 'tinygradient.js'
             }
         },
 
         // mocha tests
         mochaTest: {
             unit: {
-                src: [
-                    'tests/*.js'
-                ]
+                src: 'tests/*.js'
             }
         }
     });
