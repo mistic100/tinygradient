@@ -9,7 +9,7 @@
         module.exports = factory(require('tinycolor2'));
     }
     else if (typeof define === 'function' && define.amd) {
-        define(['tinycolor'], factory);
+        define(['tinycolor2'], factory);
     }
     else {
         root.tinygradient = factory(root.tinycolor);
