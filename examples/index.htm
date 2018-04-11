@@ -20,23 +20,24 @@
             padding: 0 10px 10px 10px;
         }
 
-        article div {
-            height: 40px;
+        article .out {
+            width: 100%;
+            height: 20px;
             margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        article div.css {
+        article .out.css {
             margin-bottom: 0;
         }
 
-        article div span {
-            display: inline-block;
+        article .out div {
+            flex-grow: 1;
             position: relative;
-            height: 40px;
-            width: 60px;
         }
 
-        article div span:after {
+        article .out div:after {
             content: attr(title);
             position: absolute;
             bottom: -15px;
@@ -48,8 +49,8 @@
 
 <body>
 
-<div class="container">
-    <h1>TinyGradient</h1>
+<div class="container-fluid">
+    <h1 style="text-align: center">TinyGradient</h1>
 </div>
 
 <script src="../bower_components/tinycolor/tinycolor.js"></script>
@@ -57,19 +58,20 @@
 
 <script>
     function addExample(colors, steps) {
+        var positions = [0, 0.25, 0.5, 0.75, 1];
         var grad = tinygradient(colors);
-        var html = '<section class="col-md-12">';
+        var html = '<section class="col-md-6">';
 
         // CSS
         html += '<article><h4>CSS reference</h4>';
-        html += '<div class="out css" style="background:' + grad.css() + ';width:' + (steps * 60) + 'px;"></div>';
+        html += '<div class="out css" style="background:' + grad.css() + ';"></div>';
         html += '</article>';
 
         // RGB
         html += '<article><h4>RGB interpolation</h4>';
         html += '<div class="out rgb">';
         grad.rgb(steps).forEach(function(color) {
-            html += '<span style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></span>';
+            html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
         });
         html += '</div></article>';
 
@@ -77,7 +79,7 @@
         html += '<article><h4>HSV short interpolation</h4>';
         html += '<div class="out hsv">';
         grad.hsv(steps, 'short').forEach(function(color) {
-            html += '<span style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></span>';
+            html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
         });
         html += '</div></article>';
 
@@ -85,13 +87,31 @@
         html += '<article><h4>HSV long interpolation</h4>';
         html += '<div class="out hsv2">';
         grad.hsv(steps, 'long').forEach(function(color) {
-            html += '<span style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></span>';
+            html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+        });
+        html += '</div></article>';
+
+        // AT (RGB)
+        html += '<article><h4>AT (RGB)</h4>';
+        html += '<div class="out">';
+        positions.forEach(function(pos) {
+            var color = grad.rgbAt(pos);
+            html += '<div style="background:' + color.toRgbString() + ';" title="' + (pos*100) + '% : ' + color.toHexString() + '"></div>';
+        });
+        html += '</div></article>';
+
+        // AT (HSV)
+        html += '<article><h4>AT (HSV)</h4>';
+        html += '<div class="out">';
+        positions.forEach(function(pos) {
+            var color = grad.hsvAt(pos);
+            html += '<div style="background:' + color.toRgbString() + ';" title="' + (pos*100) + '% : ' + color.toHexString() + '"></div>';
         });
         html += '</div></article>';
 
         html += '</section>';
 
-        document.querySelector('.container').innerHTML += html;
+        document.querySelector('.container-fluid').innerHTML += html;
     }
 
     addExample(['#00E5BC', '#BF0022'], 9);
@@ -101,6 +121,7 @@
         { color: '#255B53', pos: 0.8 },
         { color: '#000000', pos: 1 }
     ], 12);
+    addExample(['white', 'black'], 10);
 </script>
 
 </body>

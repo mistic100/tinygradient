@@ -101,6 +101,18 @@ var gradientStr = gradient.css();
 var gradientStr = gradient.css('radial', 'farthest-corner ellipse at top left');
 ```
 
+### Get color at specific position
+
+Returns a single TinyColor object from a defined position in the gradient (from 0 to 1).
+
+```javascript
+// with RGB interpolation
+colorAt55Percent = gradient.rgbAt(0.55);
+
+// with HSV interpolation
+colorAt55Percent = gradient.hsvAt(0.55);
+```
+
 ### Reversing gradient
 
 Returns a new instance of TinyGradient with reversed colors.
