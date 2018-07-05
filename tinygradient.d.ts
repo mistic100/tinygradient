@@ -6,20 +6,22 @@
 
 declare var tinygradient: tinygradient;
 
+type ArcMode = boolean | 'short' | 'long';
+
 interface TinyGradient {
 
     /**
      * Return new instance with reversed stops
      * @return {tinygradient}
      */
-	reverse():tinygradient;
+    reverse(): tinygradient;
 
     /**
      * Generate gradient with RGBa interpolation
      * @param {int} steps
      * @return {tinycolor[]}
      */
-	rgb(steps: number): tinycolorInstance[];
+    rgb(steps: number): tinycolorInstance[];
 
     /**
      * Generate gradient with HSVa interpolation
@@ -31,7 +33,7 @@ interface TinyGradient {
      *    - 'long' to use the longest way
      * @return {tinycolor[]}
      */
-	hsv(steps: number, mode: boolean): tinycolorInstance[];
+    hsv(steps: number, mode: ArcMode): tinycolorInstance[];
 
     /**
      * Generate CSS3 command (no prefix) for this gradient
@@ -39,21 +41,21 @@ interface TinyGradient {
      * @param {String} [direction] - default is 'to right' or 'ellipse at center'
      * @return {String}
      */
-	css(mode: string, direction: string): string;
+    css(mode?: 'linear' | 'radial', direction?: string): string;
 
     /**
      * Returns the color at specific position with RGBa interpolation
      * @param {float} pos, between 0 and 1
      * @return {tinycolor}
      */
-	rgbAt(pos: number): tinycolorInstance;
+    rgbAt(pos: number): tinycolorInstance;
 
     /**
      * Returns the color at specific position with HSVa interpolation
      * @param {float} pos, between 0 and 1
      * @return {tinycolor}
      */
-	hsvAt(pos: number): tinycolorInstance;
+    hsvAt(pos: number): tinycolorInstance;
 
 }
 
@@ -62,7 +64,7 @@ interface tinygradient {
      * @class tinygradient
      * @param {*} stops
      */
-	(stops: TinyGradientSteps[]): TinyGradient;
+    (stops: TinyGradientSteps[]): TinyGradient;
 }
 
 type TinyGradientSteps = string | tinycolor | ColorFormats.RGB | ColorFormats.RGBA | ColorFormats.HSL | ColorFormats.HSLA | ColorFormats.HSV | ColorFormats.HSVA;
