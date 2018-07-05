@@ -67,4 +67,7 @@ interface tinygradient {
 
 type TinyGradientSteps = string | tinycolor | ColorFormats.RGB | ColorFormats.RGBA | ColorFormats.HSL | ColorFormats.HSLA | ColorFormats.HSV | ColorFormats.HSVA;
 
-export default tinygradient;
+// export default tinygradient;
+declare module 'tinygradient' {
+    export = tinygradient;
+}
