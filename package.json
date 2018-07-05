@@ -10,6 +10,7 @@
   "license": "MIT",
   "homepage": "https://github.com/mistic100/tinygradient",
   "main": "tinygradient.js",
+  "types": "tinygradient.d.ts",
   "dependencies": {
     "@types/tinycolor2": "^1.4.0",
     "tinycolor2": "^1.0.0"
