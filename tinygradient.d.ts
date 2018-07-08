@@ -19,7 +19,7 @@ interface TinyGradient {
     /**
      * Generate gradient with RGBa interpolation
      * @param {int} steps
-     * @return {tinycolor[]}
+     * @return {tinycolorInstance[]}
      */
     rgb(steps: number): tinycolorInstance[];
 
@@ -31,7 +31,7 @@ interface TinyGradient {
      *    - true to step in trigonometric order
      *    - 'short' to use the shortest way
      *    - 'long' to use the longest way
-     * @return {tinycolor[]}
+     * @return {tinycolorInstance[]}
      */
     hsv(steps: number, mode: ArcMode): tinycolorInstance[];
 
@@ -46,14 +46,14 @@ interface TinyGradient {
     /**
      * Returns the color at specific position with RGBa interpolation
      * @param {float} pos, between 0 and 1
-     * @return {tinycolor}
+     * @return {tinycolorInstance}
      */
     rgbAt(pos: number): tinycolorInstance;
 
     /**
      * Returns the color at specific position with HSVa interpolation
      * @param {float} pos, between 0 and 1
-     * @return {tinycolor}
+     * @return {tinycolorInstance}
      */
     hsvAt(pos: number): tinycolorInstance;
 
@@ -70,7 +70,7 @@ interface tinygradient {
      * Generate gradient with RGBa interpolation
      * @param {ColorInput[]} stops
      * @param {int} steps
-     * @return {tinycolor[]}
+     * @return {tinycolorInstance[]}
      */
     rgb(stops: ColorInput[], steps: number): tinycolorInstance[];
 
@@ -83,7 +83,7 @@ interface tinygradient {
      *    - true to step in trigonometric order
      *    - 'short' to use the shortest way
      *    - 'long' to use the longest way
-     * @return {tinycolor[]}
+     * @return {tinycolorInstance[]}
      */
     hsv(stops: ColorInput[], steps: number, mode: ArcMode): tinycolorInstance[];
 
@@ -100,7 +100,7 @@ interface tinygradient {
      * Returns the color at specific position with RGBa interpolation
      * @param {ColorInput[]} stops
      * @param {float} pos, between 0 and 1
-     * @return {tinycolor}
+     * @return {tinycolorInstance}
      */
     rgbAt(stops: ColorInput[], pos: number): tinycolorInstance;
 
@@ -108,7 +108,7 @@ interface tinygradient {
      * Returns the color at specific position with HSVa interpolation
      * @param {ColorInput[]} stops
      * @param {float} pos, between 0 and 1
-     * @return {tinycolor}
+     * @return {tinycolorInstance}
      */
     hsvAt(stops: ColorInput[], pos: number): tinycolorInstance;
 }
