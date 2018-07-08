@@ -62,12 +62,56 @@ interface TinyGradient {
 interface tinygradient {
     /**
      * @class tinygradient
-     * @param {*} stops
+     * @param {ColorInput[]} stops
      */
-    (stops: TinyGradientSteps[]): TinyGradient;
-}
+    (stops: ColorInput[]): TinyGradient;
 
-type TinyGradientSteps = string | tinycolor | ColorFormats.RGB | ColorFormats.RGBA | ColorFormats.HSL | ColorFormats.HSLA | ColorFormats.HSV | ColorFormats.HSVA;
+    /**
+     * Generate gradient with RGBa interpolation
+     * @param {ColorInput[]} stops
+     * @param {int} steps
+     * @return {tinycolor[]}
+     */
+    rgb(stops: ColorInput[], steps: number): tinycolorInstance[];
+
+    /**
+     * Generate gradient with HSVa interpolation
+     * @param {ColorInput[]} stops
+     * @param {int} steps
+     * @param {Boolean|String} [mode=false]
+     *    - false to step in clockwise
+     *    - true to step in trigonometric order
+     *    - 'short' to use the shortest way
+     *    - 'long' to use the longest way
+     * @return {tinycolor[]}
+     */
+    hsv(stops: ColorInput[], steps: number, mode: ArcMode): tinycolorInstance[];
+
+    /**
+     * Generate CSS3 command (no prefix) for this gradient
+     * @param {ColorInput[]} stops
+     * @param {String} [mode=linear] - 'linear' or 'radial'
+     * @param {String} [direction] - default is 'to right' or 'ellipse at center'
+     * @return {String}
+     */
+    css(stops: ColorInput[], mode?: 'linear' | 'radial', direction?: string): string;
+
+    /**
+     * Returns the color at specific position with RGBa interpolation
+     * @param {ColorInput[]} stops
+     * @param {float} pos, between 0 and 1
+     * @return {tinycolor}
+     */
+    rgbAt(stops: ColorInput[], pos: number): tinycolorInstance;
+
+    /**
+     * Returns the color at specific position with HSVa interpolation
+     * @param {ColorInput[]} stops
+     * @param {float} pos, between 0 and 1
+     * @return {tinycolor}
+     */
+    hsvAt(stops: ColorInput[], pos: number): tinycolorInstance;
+}
 
 // export default tinygradient;
 declare module 'tinygradient' {
