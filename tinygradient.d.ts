@@ -1,119 +1,126 @@
 /*!
- * TinyGradient 0.4.0
+ * TinyGradient 0.4.1
  * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-declare var tinygradient: tinygradient;
+import * as tinycolor from 'tinycolor2';
 
-type ArcMode = boolean | 'short' | 'long';
+declare namespace tinygradient {
 
-interface TinyGradient {
+    type ArcMode = boolean | 'short' | 'long';
 
-    /**
-     * Return new instance with reversed stops
-     * @return {tinygradient}
-     */
-    reverse(): tinygradient;
+    type CssMode = 'linear' | 'radial';
 
-    /**
-     * Generate gradient with RGBa interpolation
-     * @param {int} steps
-     * @return {tinycolorInstance[]}
-     */
-    rgb(steps: number): tinycolorInstance[];
+    interface Instance {
 
-    /**
-     * Generate gradient with HSVa interpolation
-     * @param {int} steps
-     * @param {Boolean|String} [mode=false]
-     *    - false to step in clockwise
-     *    - true to step in trigonometric order
-     *    - 'short' to use the shortest way
-     *    - 'long' to use the longest way
-     * @return {tinycolorInstance[]}
-     */
-    hsv(steps: number, mode: ArcMode): tinycolorInstance[];
+        /**
+         * Return new instance with reversed stops
+         * @return {Instance}
+         */
+        reverse(): Instance;
 
-    /**
-     * Generate CSS3 command (no prefix) for this gradient
-     * @param {String} [mode=linear] - 'linear' or 'radial'
-     * @param {String} [direction] - default is 'to right' or 'ellipse at center'
-     * @return {String}
-     */
-    css(mode?: 'linear' | 'radial', direction?: string): string;
+        /**
+         * Generate gradient with RGBa interpolation
+         * @param {int} steps
+         * @return {tinycolor.Instance[]}
+         */
+        rgb(steps: number): tinycolor.Instance[];
 
-    /**
-     * Returns the color at specific position with RGBa interpolation
-     * @param {float} pos, between 0 and 1
-     * @return {tinycolorInstance}
-     */
-    rgbAt(pos: number): tinycolorInstance;
+        /**
+         * Generate gradient with HSVa interpolation
+         * @param {int} steps
+         * @param {ArcMode} [mode=false]
+         *    - false to step in clockwise
+         *    - true to step in trigonometric order
+         *    - 'short' to use the shortest way
+         *    - 'long' to use the longest way
+         * @return {tinycolor.Instance[]}
+         */
+        hsv(steps: number, mode: ArcMode): tinycolor.Instance[];
 
-    /**
-     * Returns the color at specific position with HSVa interpolation
-     * @param {float} pos, between 0 and 1
-     * @return {tinycolorInstance}
-     */
-    hsvAt(pos: number): tinycolorInstance;
+        /**
+         * Generate CSS3 command (no prefix) for this gradient
+         * @param {CssMode} [mode=linear] - 'linear' or 'radial'
+         * @param {String} [direction] - default is 'to right' or 'ellipse at center'
+         * @return {String}
+         */
+        css(mode?: CssMode, direction?: string): string;
 
+        /**
+         * Returns the color at specific position with RGBa interpolation
+         * @param {double} pos, between 0 and 1
+         * @return {tinycolor.Instance}
+         */
+        rgbAt(pos: number): tinycolor.Instance;
+
+        /**
+         * Returns the color at specific position with HSVa interpolation
+         * @param {float} pos, between 0 and 1
+         * @return {tinycolor.Instance}
+         */
+        hsvAt(pos: number): tinycolor.Instance;
+
+    }
+
+    interface Constructor {
+        /**
+         * @class tinygradient
+         * @param {tinycolor.ColorInput[]} stops
+         */
+        new (stops: tinycolor.ColorInput[]): Instance;
+        new (...stops: tinycolor.ColorInput[]): Instance;
+        (stops: tinycolor.ColorInput[]): Instance;
+        (...stops: tinycolor.ColorInput[]): Instance;
+
+        /**
+         * Generate gradient with RGBa interpolation
+         * @param {tinycolor.ColorInput[]} stops
+         * @param {int} steps
+         * @return {tinycolor.Instance[]}
+         */
+        rgb(stops: tinycolor.ColorInput[], steps: number): tinycolor.Instance[];
+
+        /**
+         * Generate gradient with HSVa interpolation
+         * @param {tinycolor.ColorInput[]} stops
+         * @param {int} steps
+         * @param {ArcMode} [mode=false]
+         *    - false to step in clockwise
+         *    - true to step in trigonometric order
+         *    - 'short' to use the shortest way
+         *    - 'long' to use the longest way
+         * @return {tinycolor.Instance[]}
+         */
+        hsv(stops: tinycolor.ColorInput[], steps: number, mode: ArcMode): tinycolor.Instance[];
+
+        /**
+         * Generate CSS3 command (no prefix) for this gradient
+         * @param {tinycolor.ColorInput[]} stops
+         * @param {CssMode} [mode=linear] - 'linear' or 'radial'
+         * @param {String} [direction] - default is 'to right' or 'ellipse at center'
+         * @return {String}
+         */
+        css(stops: tinycolor.ColorInput[], mode?: CssMode, direction?: string): string;
+
+        /**
+         * Returns the color at specific position with RGBa interpolation
+         * @param {tinycolor.ColorInput[]} stops
+         * @param {float} pos, between 0 and 1
+         * @return {tinycolor.Instance}
+         */
+        rgbAt(stops: tinycolor.ColorInput[], pos: number): tinycolor.Instance;
+
+        /**
+         * Returns the color at specific position with HSVa interpolation
+         * @param {tinycolor.ColorInput[]} stops
+         * @param {float} pos, between 0 and 1
+         * @return {tinycolor.Instance}
+         */
+        hsvAt(stops: tinycolor.ColorInput[], pos: number): tinycolor.Instance;
+    }
 }
 
-interface tinygradient {
-    /**
-     * @class tinygradient
-     * @param {ColorInput[]} stops
-     */
-    (stops: ColorInput[]): TinyGradient;
-
-    /**
-     * Generate gradient with RGBa interpolation
-     * @param {ColorInput[]} stops
-     * @param {int} steps
-     * @return {tinycolorInstance[]}
-     */
-    rgb(stops: ColorInput[], steps: number): tinycolorInstance[];
-
-    /**
-     * Generate gradient with HSVa interpolation
-     * @param {ColorInput[]} stops
-     * @param {int} steps
-     * @param {Boolean|String} [mode=false]
-     *    - false to step in clockwise
-     *    - true to step in trigonometric order
-     *    - 'short' to use the shortest way
-     *    - 'long' to use the longest way
-     * @return {tinycolorInstance[]}
-     */
-    hsv(stops: ColorInput[], steps: number, mode: ArcMode): tinycolorInstance[];
-
-    /**
-     * Generate CSS3 command (no prefix) for this gradient
-     * @param {ColorInput[]} stops
-     * @param {String} [mode=linear] - 'linear' or 'radial'
-     * @param {String} [direction] - default is 'to right' or 'ellipse at center'
-     * @return {String}
-     */
-    css(stops: ColorInput[], mode?: 'linear' | 'radial', direction?: string): string;
-
-    /**
-     * Returns the color at specific position with RGBa interpolation
-     * @param {ColorInput[]} stops
-     * @param {float} pos, between 0 and 1
-     * @return {tinycolorInstance}
-     */
-    rgbAt(stops: ColorInput[], pos: number): tinycolorInstance;
-
-    /**
-     * Returns the color at specific position with HSVa interpolation
-     * @param {ColorInput[]} stops
-     * @param {float} pos, between 0 and 1
-     * @return {tinycolorInstance}
-     */
-    hsvAt(stops: ColorInput[], pos: number): tinycolorInstance;
-}
-
-// export default tinygradient;
-declare module 'tinygradient' {
-    export = tinygradient;
-}
+declare const tinygradient: tinygradient.Constructor;
+export = tinygradient;
+export as namespace tinygradient;

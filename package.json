@@ -1,6 +1,6 @@
 {
   "name": "tinygradient",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": {
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
@@ -34,6 +34,7 @@
     "url": "https://github.com/mistic100/tinygradient/issues"
   },
   "scripts": {
+    "build": "grunt",
     "test": "grunt test"
   }
 }
