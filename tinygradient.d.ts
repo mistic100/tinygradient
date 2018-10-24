@@ -12,7 +12,13 @@ declare namespace tinygradient {
 
     type CssMode = 'linear' | 'radial';
 
+    interface Stop {
+        color: tinycolor.Instance
+        pos: number
+    }
+
     interface Instance {
+        stops: Stop[]
 
         /**
          * Return new instance with reversed stops
