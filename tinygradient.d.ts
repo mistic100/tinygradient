@@ -12,7 +12,13 @@ declare namespace tinygradient {
 
     type CssMode = 'linear' | 'radial';
 
+    type StopInput = {
+        color: tinycolor.ColorInput
+        pos: number
+    }
+
     interface Instance {
+        stops: StopInput[]
 
         /**
          * Return new instance with reversed stops
@@ -68,10 +74,10 @@ declare namespace tinygradient {
          * @class tinygradient
          * @param {tinycolor.ColorInput[]} stops
          */
-        new (stops: tinycolor.ColorInput[]): Instance;
-        new (...stops: tinycolor.ColorInput[]): Instance;
-        (stops: tinycolor.ColorInput[]): Instance;
-        (...stops: tinycolor.ColorInput[]): Instance;
+        new (stops: StopInput[] | tinycolor.ColorInput[]): Instance;
+        new (...stops: StopInput[] | tinycolor.ColorInput[]): Instance;
+        (stops: StopInput[] | tinycolor.ColorInput[]): Instance;
+        (...stops: StopInput[] | tinycolor.ColorInput[]): Instance;
 
         /**
          * Generate gradient with RGBa interpolation
@@ -79,7 +85,7 @@ declare namespace tinygradient {
          * @param {int} steps
          * @return {tinycolor.Instance[]}
          */
-        rgb(stops: tinycolor.ColorInput[], steps: number): tinycolor.Instance[];
+        rgb(stops: StopInput[] | tinycolor.ColorInput[], steps: number): tinycolor.Instance[];
 
         /**
          * Generate gradient with HSVa interpolation
@@ -92,7 +98,7 @@ declare namespace tinygradient {
          *    - 'long' to use the longest way
          * @return {tinycolor.Instance[]}
          */
-        hsv(stops: tinycolor.ColorInput[], steps: number, mode: ArcMode): tinycolor.Instance[];
+        hsv(stops: StopInput[] | tinycolor.ColorInput[], steps: number, mode: ArcMode): tinycolor.Instance[];
 
         /**
          * Generate CSS3 command (no prefix) for this gradient
@@ -101,7 +107,7 @@ declare namespace tinygradient {
          * @param {String} [direction] - default is 'to right' or 'ellipse at center'
          * @return {String}
          */
-        css(stops: tinycolor.ColorInput[], mode?: CssMode, direction?: string): string;
+        css(stops: StopInput[] | tinycolor.ColorInput[], mode?: CssMode, direction?: string): string;
 
         /**
          * Returns the color at specific position with RGBa interpolation
@@ -109,7 +115,7 @@ declare namespace tinygradient {
          * @param {float} pos, between 0 and 1
          * @return {tinycolor.Instance}
          */
-        rgbAt(stops: tinycolor.ColorInput[], pos: number): tinycolor.Instance;
+        rgbAt(stops: StopInput[] | tinycolor.ColorInput[], pos: number): tinycolor.Instance;
 
         /**
          * Returns the color at specific position with HSVa interpolation
@@ -117,7 +123,7 @@ declare namespace tinygradient {
          * @param {float} pos, between 0 and 1
          * @return {tinycolor.Instance}
          */
-        hsvAt(stops: tinycolor.ColorInput[], pos: number): tinycolor.Instance;
+        hsvAt(stops: StopInput[] | tinycolor.ColorInput[], pos: number): tinycolor.Instance;
     }
 }
 
