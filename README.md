@@ -91,7 +91,7 @@ Each method returns an array of TinyColor objects, [see available methods](https
 
 ### Get CSS gradient string
 
-The `CSS` method will output a valid W3C string (without vendors prefix) to use with `background-image` CSS property.
+The `css` method will output a valid W3C string (without vendors prefix) to use with `background-image` CSS property.
 
 ```javascript
 // linear gradient to right (default)
