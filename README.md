@@ -6,7 +6,7 @@ TinyGradient
 
 ## JavaScript gradients generator
 
-Easily generate color gradients with unlimited number of color stops and steps. 
+Easily generate color gradients with an unlimited number of color stops and steps. 
  
 Built on top of [TinyColor](https://github.com/bgrins/TinyColor).
 
@@ -14,7 +14,7 @@ Compatible with Require.js/AMD and NodeJS.
 
 ## Usage
 
-The gradient can be generate using RGB or HSV interpolation. HSV usually produces brighter colors.
+The gradient can be generated using RGB or HSV interpolation. HSV usually produces brighter colors.
 
 ### Initialize gradient
 
@@ -91,7 +91,7 @@ Each method returns an array of TinyColor objects, [see available methods](https
 
 ### Get CSS gradient string
 
-The `css` method will output a valid W3C string (without vendors prefix) to use with `background-image` css property.
+The `css` method will output a valid W3C string (without vendors prefix) to use with `background-image` CSS property.
 
 ```javascript
 // linear gradient to right (default)
@@ -101,7 +101,7 @@ var gradientStr = gradient.css();
 var gradientStr = gradient.css('radial', 'farthest-corner ellipse at top left');
 ```
 
-### Get color at specific position
+### Get color at a specific position
 
 Returns a single TinyColor object from a defined position in the gradient (from 0 to 1).
 
