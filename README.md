@@ -1,8 +1,8 @@
 TinyGradient
 ============
 
-[![Bower version](https://img.shields.io/bower/v/tinygradient.svg?style=flat-square)](https://github.com/mistic100/tinygradient)
 [![NPM version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
+[![](https://data.jsdelivr.com/v1/package/npm/tinygradient/badge)](https://www.jsdelivr.com/package/npm/tinygradient)
 
 ## JavaScript gradients generator
 

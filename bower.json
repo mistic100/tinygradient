@@ -28,6 +28,8 @@
     "bower_components",
     "tests",
     "examples",
-    "images"
+    "images",
+    "Gruntfile.js",
+    "package.json"
   ]
 }

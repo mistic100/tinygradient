@@ -1,4 +1,5 @@
 tests/
 examples/
 images/
+bower.json
 Gruntfile.js
