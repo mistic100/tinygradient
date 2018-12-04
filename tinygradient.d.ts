@@ -74,10 +74,10 @@ declare namespace tinygradient {
          * @class tinygradient
          * @param {tinycolor.ColorInput[]} stops
          */
-        new (stops: StopInput[] | tinycolor.ColorInput[]): Instance;
-        new (...stops: StopInput[] | tinycolor.ColorInput[]): Instance;
-        (stops: StopInput[] | tinycolor.ColorInput[]): Instance;
-        (...stops: StopInput[] | tinycolor.ColorInput[]): Instance;
+        new (stops: (StopInput | tinycolor.ColorInput)[]): Instance;
+        new (...stops: (StopInput | tinycolor.ColorInput)[]): Instance;
+        (stops: (StopInput | tinycolor.ColorInput)[]): Instance;
+        (...stops: (StopInput | tinycolor.ColorInput)[]): Instance;
 
         /**
          * Generate gradient with RGBa interpolation
