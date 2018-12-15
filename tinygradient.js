@@ -1,5 +1,5 @@
 /*!
- * TinyGradient 0.4.2
+ * TinyGradient 0.4.3
  * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */

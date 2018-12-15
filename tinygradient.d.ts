@@ -1,5 +1,5 @@
 /*!
- * TinyGradient 0.4.1
+ * TinyGradient 0.4.3
  * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -72,12 +72,17 @@ declare namespace tinygradient {
     interface Constructor {
         /**
          * @class tinygradient
-         * @param {tinycolor.ColorInput[]} stops
+         * @param {StopInput} stops
          */
         new (stops: StopInput[]): Instance;
         new (...stops: StopInput[]): Instance;
         (stops: StopInput[]): Instance;
         (...stops: StopInput[]): Instance;
+
+        /**
+         * @class tinygradient
+         * @param {tinycolor.ColorInput[]} stops
+         */
         new (stops: tinycolor.ColorInput[]): Instance;
         new (...stops: tinycolor.ColorInput[]): Instance;
         (stops: tinycolor.ColorInput[]): Instance;
