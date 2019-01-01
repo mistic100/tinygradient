@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
 [![jsDelivr CDN](https://data.jsdelivr.com/v1/package/npm/tinygradient/badge)](https://www.jsdelivr.com/package/npm/tinygradient)
 [![Build Status](https://img.shields.io/travis/mistic100/tinygradient/master.svg?style=flat-square)](https://travis-ci.org/mistic100/tinygradient)
-[![Dependencies Status](https://david-dm.org/mistic100/tinygradient/status.svg?style=flat-square)](https://david-dm.org/mistic100/tinygradient)
+[![Dependencies Status](https://david-dm.org/mistic100/tinygradient/status.svg?style=flat-square)](https://david-dm.org/mistic100/tinygradient) [![Greenkeeper badge](https://badges.greenkeeper.io/mistic100/tinygradient.svg)](https://greenkeeper.io/)
 
 Easily generate color gradients with an unlimited number of color stops and steps. 
 
