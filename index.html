@@ -3,24 +3,12 @@
 <head>
     <meta charset="utf-8">
 
-    <title>TinyGradient</title>
+    <title>tinygradient</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"/>
 
     <style>
-        body {
-            background: #eee;
-        }
-
-        section {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            margin: 15px 0;
-            padding: 0 10px 10px 10px;
-        }
-
-        article .out {
+        #main .out {
             width: 100%;
             height: 20px;
             margin-bottom: 20px;
@@ -28,16 +16,16 @@
             justify-content: space-between;
         }
 
-        article .out.css {
+        #main .out.css {
             margin-bottom: 0;
         }
 
-        article .out div {
+        #main .out div {
             flex-grow: 1;
             position: relative;
         }
 
-        article .out div:after {
+        #main .out div:after {
             content: attr(title);
             position: absolute;
             bottom: -15px;
@@ -49,69 +37,78 @@
 
 <body>
 
-<div class="container-fluid">
-    <h1 style="text-align: center">TinyGradient</h1>
-</div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">tinygradient</h1>
+        <p class="lead text-muted">simple gradient generator</p>
+        <p>
+            <a href="https://github.com/mistic100/tinygradient" class="btn btn-primary btn-lg">
+                <img src="https://assets.github.com/images/icons/emoji/octocat.png" width=32px height=32px> GitHub</a>
+        </p>
+    </div>
+</section>
 
-<script src="../bower_components/tinycolor/tinycolor.js"></script>
-<script src="../tinygradient.js"></script>
+<div class="container" id="main"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.1/tinycolor.min.js"></script>
+<script src="browser.js"></script>
 
 <script>
     function addExample(colors, steps) {
         var positions = [0, 0.25, 0.5, 0.75, 1];
         var grad = tinygradient(colors);
-        var html = '<section class="col-md-6">';
+        var html = '<div class="card mb-4"><ul class="list-group list-group-flush">';
 
         // CSS
-        html += '<article><h4>CSS reference</h4>';
+        html += '<li class="list-group-item"><h4>CSS reference</h4>';
         html += '<div class="out css" style="background:' + grad.css() + ';"></div>';
-        html += '</article>';
+        html += '</li>';
 
         // RGB
-        html += '<article><h4>RGB interpolation</h4>';
+        html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
         html += '<div class="out rgb">';
         grad.rgb(steps).forEach(function(color) {
             html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
         });
-        html += '</div></article>';
+        html += '</div></li>';
 
         // HSV
-        html += '<article><h4>HSV short interpolation</h4>';
+        html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
         html += '<div class="out hsv">';
         grad.hsv(steps, 'short').forEach(function(color) {
             html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
         });
-        html += '</div></article>';
+        html += '</div></li>';
 
         // HSV2
-        html += '<article><h4>HSV long interpolation</h4>';
+        html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
         html += '<div class="out hsv2">';
         grad.hsv(steps, 'long').forEach(function(color) {
             html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
         });
-        html += '</div></article>';
+        html += '</div></li>';
 
         // AT (RGB)
-        html += '<article><h4>AT (RGB)</h4>';
+        html += '<li class="list-group-item"><h4>AT (RGB)</h4>';
         html += '<div class="out">';
         positions.forEach(function(pos) {
             var color = grad.rgbAt(pos);
             html += '<div style="background:' + color.toRgbString() + ';" title="' + (pos*100) + '% : ' + color.toHexString() + '"></div>';
         });
-        html += '</div></article>';
+        html += '</div></li>';
 
         // AT (HSV)
-        html += '<article><h4>AT (HSV)</h4>';
+        html += '<li class="list-group-item"><h4>AT (HSV)</h4>';
         html += '<div class="out">';
         positions.forEach(function(pos) {
             var color = grad.hsvAt(pos);
             html += '<div style="background:' + color.toRgbString() + ';" title="' + (pos*100) + '% : ' + color.toHexString() + '"></div>';
         });
-        html += '</div></article>';
+        html += '</div></li>';
 
-        html += '</section>';
+        html += '</div></div>';
 
-        document.querySelector('.container-fluid').innerHTML += html;
+        document.querySelector('#main').innerHTML += html;
     }
 
     addExample(['#00E5BC', '#BF0022'], 9);

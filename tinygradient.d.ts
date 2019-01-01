@@ -87,52 +87,6 @@ declare namespace tinygradient {
         new (...stops: tinycolor.ColorInput[]): Instance;
         (stops: tinycolor.ColorInput[]): Instance;
         (...stops: tinycolor.ColorInput[]): Instance;
-
-        /**
-         * Generate gradient with RGBa interpolation
-         * @param {tinycolor.ColorInput[]} stops
-         * @param {int} steps
-         * @return {tinycolor.Instance[]}
-         */
-        rgb(stops: StopInput[] | tinycolor.ColorInput[], steps: number): tinycolor.Instance[];
-
-        /**
-         * Generate gradient with HSVa interpolation
-         * @param {tinycolor.ColorInput[]} stops
-         * @param {int} steps
-         * @param {ArcMode} [mode=false]
-         *    - false to step in clockwise
-         *    - true to step in trigonometric order
-         *    - 'short' to use the shortest way
-         *    - 'long' to use the longest way
-         * @return {tinycolor.Instance[]}
-         */
-        hsv(stops: StopInput[] | tinycolor.ColorInput[], steps: number, mode: ArcMode): tinycolor.Instance[];
-
-        /**
-         * Generate CSS3 command (no prefix) for this gradient
-         * @param {tinycolor.ColorInput[]} stops
-         * @param {CssMode} [mode=linear] - 'linear' or 'radial'
-         * @param {String} [direction] - default is 'to right' or 'ellipse at center'
-         * @return {String}
-         */
-        css(stops: StopInput[] | tinycolor.ColorInput[], mode?: CssMode, direction?: string): string;
-
-        /**
-         * Returns the color at specific position with RGBa interpolation
-         * @param {tinycolor.ColorInput[]} stops
-         * @param {float} pos, between 0 and 1
-         * @return {tinycolor.Instance}
-         */
-        rgbAt(stops: StopInput[] | tinycolor.ColorInput[], pos: number): tinycolor.Instance;
-
-        /**
-         * Returns the color at specific position with HSVa interpolation
-         * @param {tinycolor.ColorInput[]} stops
-         * @param {float} pos, between 0 and 1
-         * @return {tinycolor.Instance}
-         */
-        hsvAt(stops: StopInput[] | tinycolor.ColorInput[], pos: number): tinycolor.Instance;
     }
 }
 

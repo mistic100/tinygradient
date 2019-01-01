@@ -1,16 +1,21 @@
-TinyGradient
-============
+# tinygradient
 
-[![NPM version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
-[![](https://data.jsdelivr.com/v1/package/npm/tinygradient/badge)](https://www.jsdelivr.com/package/npm/tinygradient)
-
-## JavaScript gradients generator
+[![npm version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
+[![jsDelivr CDN](https://data.jsdelivr.com/v1/package/npm/tinygradient/badge)](https://www.jsdelivr.com/package/npm/tinygradient)
+[![Build Status](https://img.shields.io/travis/mistic100/tinygradient/master.svg?style=flat-square)](https://travis-ci.org/mistic100/tinygradient)
+[![Dependencies Status](https://david-dm.org/mistic100/tinygradient/status.svg?style=flat-square)](https://david-dm.org/mistic100/tinygradient)
 
 Easily generate color gradients with an unlimited number of color stops and steps. 
- 
-Built on top of [TinyColor](https://github.com/bgrins/TinyColor).
 
-Compatible with Require.js/AMD and NodeJS.
+## Installation
+
+```
+$ npm install tinygradient
+```
+
+### Dependencies
+
+- [TinyColor](https://github.com/bgrins/TinyColor)
 
 ## Usage
 
@@ -121,11 +126,6 @@ Returns a new instance of TinyGradient with reversed colors.
 var reversedGradient = gradient.reverse();
 ```
 
-## Tests
 
-A Mocha test suite is available.
-
-```
-npm install
-npm test
-```
+## License
+This library is available under the MIT license.

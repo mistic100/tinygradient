@@ -1,5 +1,7 @@
+.*
+*.iml
 tests/
-examples/
 images/
-bower.json
-Gruntfile.js
+yarn.lock
+yarn-error.log
+rollup.config.js
