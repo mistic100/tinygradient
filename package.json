@@ -11,7 +11,12 @@
   "homepage": "https://github.com/mistic100/tinygradient",
   "main": "index.js",
   "browser": "browser.js",
-  "types": "tinygradient.d.ts",
+  "types": "types.d.ts",
+  "files": [
+    "browser.js",
+    "browser.js.map",
+    "types.d.ts"
+  ],
   "dependencies": {
     "@types/tinycolor2": "^1.4.0",
     "tinycolor2": "^1.0.0"

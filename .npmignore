@@ -1,7 +1,0 @@
-.*
-*.iml
-tests/
-images/
-yarn.lock
-yarn-error.log
-rollup.config.js
