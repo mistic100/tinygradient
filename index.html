@@ -6,9 +6,22 @@
     <title>tinygradient</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-colorpicker@3.0.3/dist/css/bootstrap-colorpicker.min.css"/>
 
     <style>
-        #main .out {
+        footer {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            margin-top: 3rem;
+            background-color: #e9ecef;
+        }
+
+        .colorpicker.colorpicker-popup {
+            -moz-user-select: none;
+        }
+
+        .out-list .out {
             width: 100%;
             height: 20px;
             margin-bottom: 20px;
@@ -16,16 +29,16 @@
             justify-content: space-between;
         }
 
-        #main .out.css {
+        .out-list .out.css {
             margin-bottom: 0;
         }
 
-        #main .out div {
+        .out-list .out div {
             flex-grow: 1;
             position: relative;
         }
 
-        #main .out div:after {
+        .out-list .out div:after {
             content: attr(title);
             position: absolute;
             bottom: -15px;
@@ -43,82 +56,137 @@
         <p class="lead text-muted">simple gradient generator</p>
         <p>
             <a href="https://github.com/mistic100/tinygradient" class="btn btn-primary btn-lg">
-                <img src="https://assets.github.com/images/icons/emoji/octocat.png" width=32px height=32px> GitHub</a>
+                <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" width=32px> GitHub</a>
         </p>
     </div>
 </section>
 
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <ul class="list-group mb-3" id="colors-list"></ul>
+
+            <button class="btn btn-primary mb-3" type="button" onclick="addColor()">new color</button>
+
+            <div class="form-group form-inline">
+                <label for="steps">Steps</label>
+                <input type="number" class="ml-2 form-control" min="2" id="steps" name="steps">
+            </div>
+        </div>
+
+        <div class="col-8">
+            <div class="card mb-4">
+                <ul class="list-group list-group-flush out-list" id="playground-output">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container" id="main"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-colorpicker@3.0.3/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.1/tinycolor.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/randomcolor@0.5.4/randomColor.min.js"></script>
 <script src="browser.js"></script>
 
+<script type="text/template" id="playground-item">
+    <li class="list-group-item">
+        <div class="input-group">
+            <input class="form-control" type="text" name="color">
+            <div class="input-group-append">
+                <button class="btn btn-outline-danger btn-sm" data-dismiss="color">del.</button>
+            </div>
+        </div>
+    </li>
+</script>
+
 <script>
-    function addExample(colors, steps) {
-        var positions = [0, 0.25, 0.5, 0.75, 1];
-        var grad = tinygradient(colors);
-        var html = '<div class="card mb-4"><ul class="list-group list-group-flush">';
+    var tpl = document.querySelector('#playground-item').innerHTML;
+    var list = $('#colors-list');
 
-        // CSS
-        html += '<li class="list-group-item"><h4>CSS reference</h4>';
-        html += '<div class="out css" style="background:' + grad.css() + ';"></div>';
-        html += '</li>';
+    var steps = 9;
 
-        // RGB
-        html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
-        html += '<div class="out rgb">';
-        grad.rgb(steps).forEach(function(color) {
-            html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
-        });
-        html += '</div></li>';
+    function addColor(color) {
+        color = color || randomColor();
 
-        // HSV
-        html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
-        html += '<div class="out hsv">';
-        grad.hsv(steps, 'short').forEach(function(color) {
-            html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
-        });
-        html += '</div></li>';
+        var item = $(tpl);
+        item.find('[name=color]').val(color).colorpicker();
 
-        // HSV2
-        html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
-        html += '<div class="out hsv2">';
-        grad.hsv(steps, 'long').forEach(function(color) {
-            html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
-        });
-        html += '</div></li>';
-
-        // AT (RGB)
-        html += '<li class="list-group-item"><h4>AT (RGB)</h4>';
-        html += '<div class="out">';
-        positions.forEach(function(pos) {
-            var color = grad.rgbAt(pos);
-            html += '<div style="background:' + color.toRgbString() + ';" title="' + (pos*100) + '% : ' + color.toHexString() + '"></div>';
-        });
-        html += '</div></li>';
-
-        // AT (HSV)
-        html += '<li class="list-group-item"><h4>AT (HSV)</h4>';
-        html += '<div class="out">';
-        positions.forEach(function(pos) {
-            var color = grad.hsvAt(pos);
-            html += '<div style="background:' + color.toRgbString() + ';" title="' + (pos*100) + '% : ' + color.toHexString() + '"></div>';
-        });
-        html += '</div></li>';
-
-        html += '</div></div>';
-
-        document.querySelector('#main').innerHTML += html;
+        list.append(item);
     }
 
-    addExample(['#00E5BC', '#BF0022'], 9);
-    addExample(['red', 'blue', 'green', 'gold'], 15);
-    addExample([
-        { color: '#d8e0de', pos: 0 },
-        { color: '#255B53', pos: 0.8 },
-        { color: '#000000', pos: 1 }
-    ], 12);
-    addExample(['white', 'black'], 10);
+    function setOutput() {
+        var colors = list.find('[name=color]')
+            .map(function () {
+                return this.value;
+            })
+            .get();
+
+        var html = '';
+
+        if (colors.length < 2) {
+            html = 'Not enough colors';
+        }
+        else {
+            var grad = tinygradient(colors);
+
+            // CSS
+            html += '<li class="list-group-item"><h4>CSS reference</h4>';
+            html += '<div class="out css" style="background:' + grad.css() + ';"></div>';
+            html += '</li>';
+
+            // RGB
+            html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
+            html += '<div class="out rgb">';
+            grad.rgb(steps).forEach(function (color) {
+                html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+            });
+            html += '</div></li>';
+
+            // HSV
+            html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
+            html += '<div class="out hsv">';
+            grad.hsv(steps, 'short').forEach(function (color) {
+                html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+            });
+            html += '</div></li>';
+
+            // HSV2
+            html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
+            html += '<div class="out hsv2">';
+            grad.hsv(steps, 'long').forEach(function (color) {
+                html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+            });
+            html += '</div></li>';
+        }
+
+        document.querySelector('#playground-output').innerHTML = html;
+    }
+
+    list
+        .on('colorpickerChange colorpickerCreate', function (e) {
+            e.colorpicker.element.css('background-color', e.color);
+            e.colorpicker.element.css('color', tinycolor.mostReadable(e.color.toString(), ['white', 'black']).toHexString());
+            setOutput();
+        })
+        .on('click', '[data-dismiss="color"]', function () {
+            $(this).closest('li').remove();
+            setOutput();
+        });
+
+    $('[name=steps]')
+        .on('change input', function () {
+            steps = this.value;
+            setOutput();
+        })
+        .val(steps);
+
+    addColor('#00E5BC');
+    addColor('#BF0022');
 </script>
 
 </body>
