@@ -28,7 +28,7 @@
     "mocha": "^6.0.0",
     "nodemon": "^1.18.9",
     "npm-run-all": "^4.1.5",
-    "rollup": "^1.19.1",
+    "rollup": "^1.20.0",
     "rollup-plugin-babel": "^4.3.0",
     "rollup-plugin-commonjs": "^10.0.0"
   },
