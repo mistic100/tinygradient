@@ -27,6 +27,12 @@ declare namespace tinygradient {
         reverse(): Instance;
 
         /**
+         * Return new instance with looped stops
+         * @return {Instance}
+         */
+        loop(): Instance;
+
+        /**
          * Generate gradient with RGBa interpolation
          * @param {int} steps
          * @return {tinycolor.Instance[]}

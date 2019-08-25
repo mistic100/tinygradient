@@ -278,6 +278,31 @@ class TinyGradient {
     }
 
     /**
+     * Return new instance with looped stops
+     * @return {TinyGradient}
+     */
+    loop() {
+        let stops1 = [];
+        let stops2 = [];
+
+        this.stops.forEach((stop) => {
+            stops1.push({
+                color: stop.color,
+                pos  : stop.pos / 2
+            });
+        });
+
+        this.stops.slice(0, -1).forEach((stop) => {
+            stops2.push({
+                color: stop.color,
+                pos  : 1 - stop.pos / 2
+            });
+        });
+
+        return new TinyGradient(stops1.concat(stops2.reverse()));
+    }
+
+    /**
      * Generate gradient with RGBa interpolation
      * @param {number} steps
      * @return {tinycolor[]}
