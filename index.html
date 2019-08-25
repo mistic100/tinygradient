@@ -38,12 +38,16 @@
             position: relative;
         }
 
-        .out-list .out div:after {
+        .out-list .out div>span  {
             content: attr(title);
             position: absolute;
             bottom: -15px;
             font-family: monospace;
             font-size: 12px;
+        }
+        .out-list .out div>span::selection {
+            color: white;
+            background: #444;
         }
     </style>
 </head>
@@ -62,6 +66,8 @@
 </section>
 
 <div class="container">
+    <h2>Playground</h2>
+
     <div class="row">
         <div class="col-4">
             <ul class="list-group mb-3" id="colors-list"></ul>
@@ -83,7 +89,30 @@
     </div>
 </div>
 
-<div class="container" id="main"></div>
+<div class="container">
+    <h2>Colorbrewer</h2>
+
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group form-inline">
+                <label for="cb-scheme">Scheme</label>
+                <select class="ml-2 form-control" id="cb-scheme" name="cb-scheme"></select>
+            </div>
+
+            <div class="form-group form-inline">
+                <label for="cb-steps">Steps</label>
+                <input type="number" class="ml-2 form-control" min="3" id="cb-steps" name="cb-steps">
+            </div>
+        </div>
+
+        <div class="col-8">
+            <div class="card mb-4">
+                <ul class="list-group list-group-flush out-list" id="cb-playground-output">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
@@ -91,6 +120,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-colorpicker@3.0.3/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.1/tinycolor.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/randomcolor@0.5.4/randomColor.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/colorbrewer@1.3.0/index.min.js"></script>
 <script src="browser.js"></script>
 
 <script type="text/template" id="playground-item">
@@ -130,8 +160,7 @@
 
         if (colors.length < 2) {
             html = 'Not enough colors';
-        }
-        else {
+        } else {
             var grad = tinygradient(colors);
 
             // CSS
@@ -143,7 +172,7 @@
             html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
             html += '<div class="out rgb">';
             grad.rgb(steps).forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
             });
             html += '</div></li>';
 
@@ -151,7 +180,7 @@
             html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
             html += '<div class="out hsv">';
             grad.hsv(steps, 'short').forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
             });
             html += '</div></li>';
 
@@ -159,7 +188,7 @@
             html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
             html += '<div class="out hsv2">';
             grad.hsv(steps, 'long').forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';" title="' + color.toHexString() + '"></div>';
+                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
             });
             html += '</div></li>';
         }
@@ -187,6 +216,63 @@
 
     addColor('#00E5BC');
     addColor('#BF0022');
+
+    ////////////////////////////////////////
+
+    var cbScheme = 'BuGn';
+    var cbSteps = 9;
+
+    function setCbOutput() {
+        var colors = list.find('[name=color]')
+            .map(function () {
+                return this.value;
+            })
+            .get();
+
+        var html = '';
+
+        var cbVariant = Math.min(cbSteps, Math.max.apply(null, Object.keys(colorbrewer[cbScheme])));
+        var grad = tinygradient(colorbrewer[cbScheme][cbVariant]);
+
+        html += '<li class="list-group-item">';
+        html += '<div class="out rgb">';
+        grad.rgb(cbSteps).forEach(function (color) {
+            html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
+        });
+        html += '</div></li>';
+
+        document.querySelector('#cb-playground-output').innerHTML = html;
+    }
+
+    (function() {
+        var html = '';
+
+        $.each(colorbrewer.schemeGroups, function(group, schemes) {
+           html+= '<optgroup label="' + group + '">';
+           schemes.forEach(function(scheme) {
+              html += '<option>' + scheme + '</option>';
+           });
+           html+= '</optgroup>';
+        });
+
+        $('[name=cb-scheme]').html(html);
+    }());
+
+    $('[name=cb-scheme]')
+        .on('change', function () {
+            cbScheme = this.value;
+            setCbOutput();
+        })
+        .val(cbScheme);
+
+    $('[name=cb-steps]')
+        .on('change', function () {
+            cbSteps = this.value;
+            setCbOutput();
+        })
+        .val(cbSteps);
+
+    setCbOutput();
 </script>
 
 </body>
