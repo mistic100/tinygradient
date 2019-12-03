@@ -1,5 +1,5 @@
 /*!
- * tinygradient (v1.0.0)
+ * tinygradient (v1.1.0)
  * @copyright 2014-2019 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
@@ -7,7 +7,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('tinycolor2')) :
     typeof define === 'function' && define.amd ? define(['tinycolor2'], factory) :
     (global = global || self, global.tinygradient = factory(global.tinycolor));
-}(this, function (tinycolor2) { 'use strict';
+}(this, (function (tinycolor2) { 'use strict';
 
     tinycolor2 = tinycolor2 && tinycolor2.hasOwnProperty('default') ? tinycolor2['default'] : tinycolor2;
 
@@ -458,5 +458,5 @@
 
     return tinygradient;
 
-}));
+})));
 //# sourceMappingURL=browser.js.map

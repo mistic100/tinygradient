@@ -91,4 +91,15 @@ describe('TinyGradient', function() {
         res = grad.hsvAt(0.5);
         assert.deepStrictEqual({ h: 120, s: 1, v: 1, a: 1 }, res.toHsv(), 'hsv');
     });
+
+    it('should loop a gradient', function() {
+        let grad = tinygradient({ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 });
+        let res = grad.loop().rgb(5);
+
+        assert.strictEqual(5, res.length);
+        assert.deepStrictEqual({ r: 0, g: 0, b: 0, a: 1 }, res[0].toRgb(), 'black');
+        assert.deepStrictEqual({ r: 255, g: 255, b: 255, a: 1 }, res[2].toRgb(), 'white');
+        assert.deepStrictEqual(res[0].toRgb(), res[4].toRgb(), 'black');
+        assert.deepStrictEqual(res[1].toRgb(), res[3].toRgb(), 'black');
+    });
 });

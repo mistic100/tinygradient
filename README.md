@@ -3,7 +3,6 @@
 [![npm version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
 [![jsDelivr CDN](https://data.jsdelivr.com/v1/package/npm/tinygradient/badge)](https://www.jsdelivr.com/package/npm/tinygradient)
 [![Build Status](https://github.com/mistic100/tinygradient/workflows/CI/badge.svg)](https://github.com/mistic100/tinygradient/actions)
-[![Dependencies Status](https://david-dm.org/mistic100/tinygradient/status.svg?style=flat-square)](https://david-dm.org/mistic100/tinygradient)
 
 Easily generate color gradients with an unlimited number of color stops and steps. 
 
@@ -124,6 +123,14 @@ Returns a new instance of TinyGradient with reversed colors.
 
 ```javascript
 var reversedGradient = gradient.reverse();
+```
+
+### Loop the gradient
+
+Returns a new instance of TinyGradient with looped colors.
+
+```javascript
+var loopedGradient = gradient.loop();
 ```
 
 
