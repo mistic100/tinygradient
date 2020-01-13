@@ -133,6 +133,18 @@ Returns a new instance of TinyGradient with looped colors.
 var loopedGradient = gradient.loop();
 ```
 
+### Position-only stops
+
+I is possible to define stops with the `pos` property only and no `color`. This allows to define the position of the mid-point between the previous and the next stop.
+
+```js
+var gradient = tinygradient([
+  {color: 'black', pos: 0},
+  {pos: 0.8}, // #808080 will be at 80% instead of 50%
+  {color: 'white', pos: 1}
+]);
+```
+
 
 ## License
 This library is available under the MIT license.

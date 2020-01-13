@@ -1,6 +1,6 @@
 /*!
  * tinygradient (v1.1.0)
- * @copyright 2014-2019 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
+ * @copyright 2014-2020 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
 (function (global, factory) {
@@ -116,14 +116,28 @@
      * @param {StopInput} stop1
      * @param {StopInput} stop2
      * @param {number} steps
-     * @param {boolean} trigonometric - true to step in trigonometric order
+     * @param {boolean|'long'|'short'} mode
      * @return {tinycolor[]} color1 included, color2 excluded
      */
 
 
-    function interpolateHsv(stop1, stop2, steps, trigonometric) {
+    function interpolateHsv(stop1, stop2, steps, mode) {
       var start = stop1.color.toHsv();
-      var end = stop2.color.toHsv();
+      var end = stop2.color.toHsv(); // rgb interpolation if one of the steps in grayscale
+
+      if (start.s === 0 || end.s === 0) {
+        return interpolateRgb(start, end, steps);
+      }
+
+      var trigonometric;
+
+      if (typeof mode === 'boolean') {
+        trigonometric = mode;
+      } else {
+        var trigShortest = start.h < end.h && end.h - start.h < 180 || start.h > end.h && start.h - end.h > 180;
+        trigonometric = mode === 'long' && trigShortest || mode === 'short' && !trigShortest;
+      }
+
       var step = stepize(start, end, steps);
       var gradient = [stop1.color]; // recompute hue
 
@@ -245,7 +259,8 @@
 
         var havingPositions = stops[0].pos !== undefined;
         var l = stops.length;
-        var p = -1; // create tinycolor objects and clean positions
+        var p = -1;
+        var lastColorLess = false; // create tinycolor objects and clean positions
 
         this.stops = stops.map(function (stop, i) {
           var hasPosition = stop.pos !== undefined;
@@ -255,8 +270,16 @@
           }
 
           if (hasPosition) {
+            var hasColor = stop.color !== undefined;
+
+            if (!hasColor && (lastColorLess || i === 0 || i === l - 1)) {
+              throw new Error('Cannot define two consecutive position-only stops');
+            }
+
+            lastColorLess = !hasColor;
             stop = {
-              color: tinycolor2(stop.color),
+              color: hasColor ? tinycolor2(stop.color) : null,
+              colorLess: !hasColor,
               pos: stop.pos
             };
 
@@ -269,7 +292,7 @@
             p = stop.pos;
           } else {
             stop = {
-              color: tinycolor2(stop),
+              color: tinycolor2(stop.color !== undefined ? stop.color : stop),
               pos: i / (l - 1)
             };
           }
@@ -284,9 +307,9 @@
           });
         }
 
-        if (this.stops[this.stops.length - 1].pos !== 1) {
+        if (this.stops[l - 1].pos !== 1) {
           this.stops.push({
-            color: this.stops[this.stops.length - 1].color,
+            color: this.stops[l - 1].color,
             pos: 1
           });
         }
@@ -340,8 +363,15 @@
       ;
 
       _proto.rgb = function rgb(steps) {
+        var _this = this;
+
         var substeps = computeSubsteps(this.stops, steps);
         var gradient = [];
+        this.stops.forEach(function (stop, i) {
+          if (stop.colorLess) {
+            stop.color = interpolateRgb(_this.stops[i - 1], _this.stops[i + 1], 2)[1];
+          }
+        });
 
         for (var i = 0, l = this.stops.length; i < l - 1; i++) {
           var rgb = interpolateRgb(this.stops[i], this.stops[i + 1], substeps[i]);
@@ -354,7 +384,7 @@
       /**
        * Generate gradient with HSVa interpolation
        * @param {number} steps
-       * @param {boolean|String} [mode=false]
+       * @param {boolean|'long'|'short'} [mode=false]
        *    - false to step in clockwise
        *    - true to step in trigonometric order
        *    - 'short' to use the shortest way
@@ -364,30 +394,18 @@
       ;
 
       _proto.hsv = function hsv(steps, mode) {
+        var _this2 = this;
+
         var substeps = computeSubsteps(this.stops, steps);
         var gradient = [];
+        this.stops.forEach(function (stop, i) {
+          if (stop.colorLess) {
+            stop.color = interpolateHsv(_this2.stops[i - 1], _this2.stops[i + 1], 2, mode)[1];
+          }
+        });
 
         for (var i = 0, l = this.stops.length; i < l - 1; i++) {
-          var start = this.stops[i].color.toHsv();
-          var end = this.stops[i + 1].color.toHsv(); // rgb interpolation if one of the steps in grayscale
-
-          var hsv = void 0;
-
-          if (start.s === 0 || end.s === 0) {
-            hsv = interpolateRgb(this.stops[i], this.stops[i + 1], substeps[i]);
-          } else {
-            var trigonometricStep = void 0;
-
-            if (typeof mode === 'boolean') {
-              trigonometricStep = mode;
-            } else {
-              var trigShortest = start.h < end.h && end.h - start.h < 180 || start.h > end.h && start.h - end.h > 180;
-              trigonometricStep = mode === 'long' && trigShortest || mode === 'short' && !trigShortest;
-            }
-
-            hsv = interpolateHsv(this.stops[i], this.stops[i + 1], substeps[i], trigonometricStep);
-          }
-
+          var hsv = interpolateHsv(this.stops[i], this.stops[i + 1], substeps[i], mode);
           gradient.splice.apply(gradient, [gradient.length, 0].concat(hsv));
         }
 
@@ -407,7 +425,7 @@
         direction = direction || (mode === 'linear' ? 'to right' : 'ellipse at center');
         var css = mode + '-gradient(' + direction;
         this.stops.forEach(function (stop) {
-          css += ', ' + stop.color.toRgbString() + ' ' + stop.pos * 100 + '%';
+          css += ', ' + (stop.colorLess ? '' : stop.color.toRgbString() + ' ') + stop.pos * 100 + '%';
         });
         css += ')';
         return css;

@@ -93,12 +93,27 @@ function interpolateRgb(stop1, stop2, steps) {
  * @param {StopInput} stop1
  * @param {StopInput} stop2
  * @param {number} steps
- * @param {boolean} trigonometric - true to step in trigonometric order
+ * @param {boolean|'long'|'short'} mode
  * @return {tinycolor[]} color1 included, color2 excluded
  */
-function interpolateHsv(stop1, stop2, steps, trigonometric) {
+function interpolateHsv(stop1, stop2, steps, mode) {
     const start = stop1.color.toHsv();
     const end = stop2.color.toHsv();
+
+    // rgb interpolation if one of the steps in grayscale
+    if (start.s === 0 || end.s === 0) {
+        return interpolateRgb(start, end, steps);
+    }
+
+    let trigonometric;
+    if (typeof mode === 'boolean') {
+        trigonometric = mode;
+    }
+    else {
+        const trigShortest = (start.h < end.h && end.h - start.h < 180) || (start.h > end.h && start.h - end.h > 180);
+        trigonometric = (mode === 'long' && trigShortest) || (mode === 'short' && !trigShortest);
+    }
+
     const step = stepize(start, end, steps);
     let gradient = [stop1.color];
 
@@ -215,17 +230,25 @@ class TinyGradient {
         const havingPositions = stops[0].pos !== undefined;
         const l = stops.length;
         let p = -1;
+        let lastColorLess = false;
         // create tinycolor objects and clean positions
-        this.stops = stops.map(function(stop, i) {
+        this.stops = stops.map((stop, i) => {
             const hasPosition = stop.pos !== undefined;
             if (havingPositions ^ hasPosition) {
                 throw new Error('Cannot mix positionned and not posionned color stops');
             }
 
             if (hasPosition) {
+                const hasColor = stop.color !== undefined;
+                if (!hasColor && (lastColorLess || i === 0 || i === l - 1)) {
+                    throw new Error('Cannot define two consecutive position-only stops');
+                }
+                lastColorLess = !hasColor;
+
                 stop = {
-                    color: tinycolor(stop.color),
-                    pos  : stop.pos
+                    color    : hasColor ? tinycolor(stop.color) : null,
+                    colorLess: !hasColor,
+                    pos      : stop.pos
                 };
 
                 if (stop.pos < 0 || stop.pos > 1) {
@@ -238,7 +261,7 @@ class TinyGradient {
             }
             else {
                 stop = {
-                    color: tinycolor(stop),
+                    color: tinycolor(stop.color !== undefined ? stop.color : stop),
                     pos  : i / (l - 1)
                 };
             }
@@ -252,9 +275,9 @@ class TinyGradient {
                 pos  : 0
             });
         }
-        if (this.stops[this.stops.length - 1].pos !== 1) {
+        if (this.stops[l - 1].pos !== 1) {
             this.stops.push({
-                color: this.stops[this.stops.length - 1].color,
+                color: this.stops[l - 1].color,
                 pos  : 1
             });
         }
@@ -267,7 +290,7 @@ class TinyGradient {
     reverse() {
         let stops = [];
 
-        this.stops.forEach(function(stop) {
+        this.stops.forEach(function (stop) {
             stops.push({
                 color: stop.color,
                 pos  : 1 - stop.pos
@@ -311,6 +334,12 @@ class TinyGradient {
         const substeps = computeSubsteps(this.stops, steps);
         let gradient = [];
 
+        this.stops.forEach((stop, i) => {
+            if (stop.colorLess) {
+                stop.color = interpolateRgb(this.stops[i - 1], this.stops[i + 1], 2)[1];
+            }
+        });
+
         for (let i = 0, l = this.stops.length; i < l - 1; i++) {
             const rgb = interpolateRgb(this.stops[i], this.stops[i + 1], substeps[i]);
             gradient.splice(gradient.length, 0, ...rgb);
@@ -324,7 +353,7 @@ class TinyGradient {
     /**
      * Generate gradient with HSVa interpolation
      * @param {number} steps
-     * @param {boolean|String} [mode=false]
+     * @param {boolean|'long'|'short'} [mode=false]
      *    - false to step in clockwise
      *    - true to step in trigonometric order
      *    - 'short' to use the shortest way
@@ -335,26 +364,14 @@ class TinyGradient {
         const substeps = computeSubsteps(this.stops, steps);
         let gradient = [];
 
-        for (let i = 0, l = this.stops.length; i < l - 1; i++) {
-            const start = this.stops[i].color.toHsv();
-            const end = this.stops[i + 1].color.toHsv();
+        this.stops.forEach((stop, i) => {
+            if (stop.colorLess) {
+                stop.color = interpolateHsv(this.stops[i - 1], this.stops[i + 1], 2, mode)[1];
+            }
+        });
 
-            // rgb interpolation if one of the steps in grayscale
-            let hsv;
-            if (start.s === 0 || end.s === 0) {
-                hsv = interpolateRgb(this.stops[i], this.stops[i + 1], substeps[i]);
-            }
-            else {
-                let trigonometricStep;
-                if (typeof mode === 'boolean') {
-                    trigonometricStep = mode;
-                }
-                else {
-                    const trigShortest = (start.h < end.h && end.h - start.h < 180) || (start.h > end.h && start.h - end.h > 180);
-                    trigonometricStep = (mode === 'long' && trigShortest) || (mode === 'short' && !trigShortest);
-                }
-                hsv = interpolateHsv(this.stops[i], this.stops[i + 1], substeps[i], trigonometricStep);
-            }
+        for (let i = 0, l = this.stops.length; i < l - 1; i++) {
+            const hsv = interpolateHsv(this.stops[i], this.stops[i + 1], substeps[i], mode);
             gradient.splice(gradient.length, 0, ...hsv);
         }
 
@@ -374,8 +391,8 @@ class TinyGradient {
         direction = direction || (mode === 'linear' ? 'to right' : 'ellipse at center');
 
         let css = mode + '-gradient(' + direction;
-        this.stops.forEach(function(stop) {
-            css += ', ' + stop.color.toRgbString() + ' ' + (stop.pos * 100) + '%';
+        this.stops.forEach(function (stop) {
+            css += ', ' + (stop.colorLess ? '' : stop.color.toRgbString() + ' ') + (stop.pos * 100) + '%';
         });
         css += ')';
         return css;
@@ -404,7 +421,7 @@ class TinyGradient {
  * @param {StopInput[]|ColorInput[]|StopInput...|ColorInput...} stops
  * @returns {TinyGradient}
  */
-module.exports = function(stops) {
+module.exports = function (stops) {
     // varargs
     if (arguments.length === 1) {
         if (!(arguments[0] instanceof Array)) {

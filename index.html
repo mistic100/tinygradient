@@ -149,13 +149,17 @@
         list.append(item);
     }
 
-    function setOutput() {
+    function setOutputFromPlayground() {
         var colors = list.find('[name=color]')
             .map(function () {
                 return this.value;
             })
             .get();
 
+        setOutput(colors);
+    }
+
+    function setOutput(colors) {
         var html = '';
 
         if (colors.length < 2) {
@@ -208,17 +212,17 @@
         .on('colorpickerChange colorpickerCreate', function (e) {
             e.colorpicker.element.css('background-color', e.color);
             e.colorpicker.element.css('color', tinycolor.mostReadable(e.color.toString(), ['white', 'black']).toHexString());
-            setOutput();
+            setOutputFromPlayground();
         })
         .on('click', '[data-dismiss="color"]', function () {
             $(this).closest('li').remove();
-            setOutput();
+            setOutputFromPlayground();
         });
 
     $('[name=steps]')
         .on('change input', function () {
             steps = this.value;
-            setOutput();
+            setOutputFromPlayground();
         })
         .val(steps);
 

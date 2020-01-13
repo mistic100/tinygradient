@@ -13,8 +13,8 @@ declare namespace tinygradient {
     type CssMode = 'linear' | 'radial';
 
     type StopInput = {
-        color: tinycolor.ColorInput
-        pos: number
+        color?: tinycolor.ColorInput
+        pos?: number
     }
 
     interface Instance {
