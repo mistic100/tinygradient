@@ -1,5 +1,5 @@
 /*!
- * tinygradient (v1.1.0)
+ * tinygradient (v1.1.1)
  * @copyright 2014-2020 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
