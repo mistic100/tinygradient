@@ -70,7 +70,18 @@
 
     <div class="row">
         <div class="col-4">
-            <ul class="list-group mb-3" id="colors-list"></ul>
+            <ul class="list-group mb-3" id="colors-list">
+                <li class="list-group-item list-group-item-secondary" style="padding: 0.25rem 1.25rem;">
+                    <div class="form-row">
+                        <div class="col-7">
+                            Color
+                        </div>
+                        <div class="col-5">
+                            Position
+                        </div>
+                    </div>
+                </li>
+            </ul>
 
             <button class="btn btn-primary mb-3" type="button" onclick="addColor()">new color</button>
 
@@ -125,10 +136,15 @@
 
 <script type="text/template" id="playground-item">
     <li class="list-group-item">
-        <div class="input-group">
-            <input class="form-control" type="text" name="color">
-            <div class="input-group-append">
-                <button class="btn btn-outline-danger btn-sm" data-dismiss="color">del.</button>
+        <div class="form-row">
+            <div class="col-7">
+                <input class="form-control" type="text" name="color">
+            </div>
+            <div class="col-3">
+                <input class="form-control" type="number" min="0" max="1" step="0.1" name="pos">
+            </div>
+            <div class="col-2">
+                <button class="btn btn-outline-danger" data-dismiss="color">del.</button>
             </div>
         </div>
     </li>
@@ -147,62 +163,90 @@
         item.find('[name=color]').val(color).colorpicker();
 
         list.append(item);
+
+        computePos();
+    }
+
+    function computePos() {
+        var pos = list.find('[name=pos]');
+
+        pos.each(function(i) {
+           this.value = i / (pos.length - 1);
+        });
     }
 
     function setOutputFromPlayground() {
+        var pos = list.find('[name=pos]')
+            .map(function () {
+                var val = parseFloat(this.value);
+                return isNaN(val) ? undefined : val;
+            })
+            .get();
+
         var colors = list.find('[name=color]')
             .map(function () {
                 return this.value;
             })
-            .get();
+            .get()
+            .map(function(color, i) {
+                return {
+                    color: color,
+                    pos: pos[i]
+                };
+            });
 
-        setOutput(colors);
+        setOutput(colors, steps);
     }
 
-    function setOutput(colors) {
+    function setOutput(colors, steps) {
         var html = '';
 
         if (colors.length < 2) {
             html = 'Not enough colors';
         } else {
-            var grad = tinygradient(colors);
+            try {
+                var grad = tinygradient(colors);
 
-            // CSS
-            html += '<li class="list-group-item"><h4>CSS reference</h4>';
-            html += '<div class="out css" style="background:' + grad.css() + ';"></div>';
-            html += '</li>';
+                // CSS
+                html += '<li class="list-group-item"><h4>CSS reference</h4>';
+                html += '<div class="out css" style="background:' + grad.css() + ';"></div>';
+                html += '</li>';
 
-            // RGB
-            html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
-            html += '<div class="out rgb">';
-            grad.rgb(steps).forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
-            });
-            html += '</div></li>';
+                // RGB
+                html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
+                html += '<div class="out rgb">';
+                grad.rgb(steps).forEach(function (color) {
+                    html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
+                });
+                html += '</div></li>';
 
-            // RGB loop
-            html += '<li class="list-group-item"><h4>RGB loop</h4>';
-            html += '<div class="out rgb">';
-            grad.loop().rgb(steps).forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
-            });
-            html += '</div></li>';
+                // RGB loop
+                html += '<li class="list-group-item"><h4>RGB loop</h4>';
+                html += '<div class="out rgb">';
+                grad.loop().rgb(Math.max(steps, colors.length * 2 - 1)).forEach(function (color) {
+                    html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
+                });
+                html += '</div></li>';
 
-            // HSV
-            html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
-            html += '<div class="out hsv">';
-            grad.hsv(steps, 'short').forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
-            });
-            html += '</div></li>';
+                // HSV
+                html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
+                html += '<div class="out hsv">';
+                grad.hsv(steps, 'short').forEach(function (color) {
+                    html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
+                });
+                html += '</div></li>';
 
-            // HSV2
-            html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
-            html += '<div class="out hsv2">';
-            grad.hsv(steps, 'long').forEach(function (color) {
-                html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
-            });
-            html += '</div></li>';
+                // HSV2
+                html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
+                html += '<div class="out hsv2">';
+                grad.hsv(steps, 'long').forEach(function (color) {
+                    html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
+                });
+                html += '</div></li>';
+
+            } catch (error) {
+                html = error;
+            }
         }
 
         document.querySelector('#playground-output').innerHTML = html;
@@ -214,8 +258,12 @@
             e.colorpicker.element.css('color', tinycolor.mostReadable(e.color.toString(), ['white', 'black']).toHexString());
             setOutputFromPlayground();
         })
+        .on('change', '[name=pos]', function() {
+            setOutputFromPlayground();
+        })
         .on('click', '[data-dismiss="color"]', function () {
             $(this).closest('li').remove();
+            computePos();
             setOutputFromPlayground();
         });
 

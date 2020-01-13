@@ -305,6 +305,7 @@
             color: this.stops[0].color,
             pos: 0
           });
+          l++;
         }
 
         if (this.stops[l - 1].pos !== 1) {

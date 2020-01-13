@@ -228,7 +228,7 @@ class TinyGradient {
         }
 
         const havingPositions = stops[0].pos !== undefined;
-        const l = stops.length;
+        let l = stops.length;
         let p = -1;
         let lastColorLess = false;
         // create tinycolor objects and clean positions
@@ -274,6 +274,7 @@ class TinyGradient {
                 color: this.stops[0].color,
                 pos  : 0
             });
+            l++;
         }
         if (this.stops[l - 1].pos !== 1) {
             this.stops.push({
