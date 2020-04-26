@@ -1,5 +1,5 @@
 /*!
- * tinygradient (v1.1.1)
+ * tinygradient (v1.1.2)
  * @copyright 2014-2020 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
@@ -7,7 +7,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('tinycolor2')) :
     typeof define === 'function' && define.amd ? define(['tinycolor2'], factory) :
     (global = global || self, global.tinygradient = factory(global.tinycolor));
-}(this, (function (tinycolor2) { 'use strict';
+}(this, function (tinycolor2) { 'use strict';
 
     tinycolor2 = tinycolor2 && tinycolor2.hasOwnProperty('default') ? tinycolor2['default'] : tinycolor2;
 
@@ -126,7 +126,7 @@
       var end = stop2.color.toHsv(); // rgb interpolation if one of the steps in grayscale
 
       if (start.s === 0 || end.s === 0) {
-        return interpolateRgb(start, end, steps);
+        return interpolateRgb(stop1, stop2, steps);
       }
 
       var trigonometric;
@@ -477,5 +477,5 @@
 
     return tinygradient;
 
-})));
+}));
 //# sourceMappingURL=browser.js.map
