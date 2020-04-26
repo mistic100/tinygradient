@@ -124,4 +124,13 @@ describe('TinyGradient', () => {
             ['000000', '808080', 'aaaaaa', 'd5d5d5', 'ffffff']
         );
     });
+
+    it('should force RGB interpolation when a color is grey', () => {
+       let grad = tinygradient('rgba(86, 86, 86)', 'rgb(45, 163, 185)');
+
+       assert.deepStrictEqual(
+           grad.hsv(5).map((c) => c.toHex()),
+           grad.rgb(5).map((c) => c.toHex()),
+       );
+    });
 });

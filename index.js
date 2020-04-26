@@ -102,7 +102,7 @@ function interpolateHsv(stop1, stop2, steps, mode) {
 
     // rgb interpolation if one of the steps in grayscale
     if (start.s === 0 || end.s === 0) {
-        return interpolateRgb(start, end, steps);
+        return interpolateRgb(stop1, stop2, steps);
     }
 
     let trigonometric;
