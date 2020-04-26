@@ -254,8 +254,9 @@
 
     list
         .on('colorpickerChange colorpickerCreate', function (e) {
-            e.colorpicker.element.css('background-color', e.color);
+            e.colorpicker.element.css('background-color', e.color.toString());
             e.colorpicker.element.css('color', tinycolor.mostReadable(e.color.toString(), ['white', 'black']).toHexString());
+            e.colorpicker.element[0].value = e.color.toString();
             setOutputFromPlayground();
         })
         .on('change', '[name=pos]', function() {
