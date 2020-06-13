@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/tinygradient.svg?style=flat-square)](https://www.npmjs.com/package/tinygradient)
 [![jsDelivr CDN](https://data.jsdelivr.com/v1/package/npm/tinygradient/badge)](https://www.jsdelivr.com/package/npm/tinygradient)
+[![GZIP size](https://flat.badgen.net/bundlephobia/minzip/tinygradient)](https://bundlephobia.com/result?p=tinygradient)
 [![Build Status](https://github.com/mistic100/tinygradient/workflows/CI/badge.svg)](https://github.com/mistic100/tinygradient/actions)
 
 Easily generate color gradients with an unlimited number of color stops and steps. 
