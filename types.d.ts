@@ -61,7 +61,7 @@ declare namespace tinygradient {
 
         /**
          * Returns the color at specific position with RGBa interpolation
-         * @param {double} pos, between 0 and 1
+         * @param {float} pos, between 0 and 1
          * @return {tinycolor.Instance}
          */
         rgbAt(pos: number): tinycolor.Instance;

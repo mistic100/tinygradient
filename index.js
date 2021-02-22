@@ -212,7 +212,7 @@ function computeAt(stops, pos, method, max) {
     }
 
     const step = stepize(start.color[method](), end.color[method](), (end.pos - start.pos) * 100);
-    const color = interpolate(step, start.color[method](), Math.round((pos - start.pos) * 100), max);
+    const color = interpolate(step, start.color[method](), (pos - start.pos) * 100, max);
     return tinycolor(color);
 }
 

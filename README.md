@@ -7,6 +7,8 @@
 
 Easily generate color gradients with an unlimited number of color stops and steps. 
 
+[Live demo](https://mistic100.github.io/tinygradient/)
+
 ## Installation
 
 ```
