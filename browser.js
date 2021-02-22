@@ -1,15 +1,17 @@
 /*!
- * tinygradient (v1.1.2)
- * @copyright 2014-2020 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
+ * tinygradient (v1.1.3)
+ * @copyright 2014-2021 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('tinycolor2')) :
     typeof define === 'function' && define.amd ? define(['tinycolor2'], factory) :
-    (global = global || self, global.tinygradient = factory(global.tinycolor));
-}(this, function (tinycolor2) { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.tinygradient = factory(global.tinycolor));
+}(this, (function (tinycolor2) { 'use strict';
 
-    tinycolor2 = tinycolor2 && tinycolor2.hasOwnProperty('default') ? tinycolor2['default'] : tinycolor2;
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+    var tinycolor2__default = /*#__PURE__*/_interopDefaultLegacy(tinycolor2);
 
     /**
      * @typedef {Object} TinyGradient.StopInput
@@ -106,7 +108,7 @@
 
       for (var i = 1; i < steps; i++) {
         var color = interpolate(step, start, i, RGBA_MAX);
-        gradient.push(tinycolor2(color));
+        gradient.push(tinycolor2__default['default'](color));
       }
 
       return gradient;
@@ -155,7 +157,7 @@
 
       for (var i = 1; i < steps; i++) {
         var color = interpolate(step, start, i, HSVA_MAX);
-        gradient.push(tinycolor2(color));
+        gradient.push(tinycolor2__default['default'](color));
       }
 
       return gradient;
@@ -240,13 +242,11 @@
       }
 
       var step = stepize(start.color[method](), end.color[method](), (end.pos - start.pos) * 100);
-      var color = interpolate(step, start.color[method](), Math.round((pos - start.pos) * 100), max);
-      return tinycolor2(color);
+      var color = interpolate(step, start.color[method](), (pos - start.pos) * 100, max);
+      return tinycolor2__default['default'](color);
     }
 
-    var TinyGradient =
-    /*#__PURE__*/
-    function () {
+    var TinyGradient = /*#__PURE__*/function () {
       /**
        * @param {StopInput[]|ColorInput[]} stops
        * @returns {TinyGradient}
@@ -278,7 +278,7 @@
 
             lastColorLess = !hasColor;
             stop = {
-              color: hasColor ? tinycolor2(stop.color) : null,
+              color: hasColor ? tinycolor2__default['default'](stop.color) : null,
               colorLess: !hasColor,
               pos: stop.pos
             };
@@ -292,7 +292,7 @@
             p = stop.pos;
           } else {
             stop = {
-              color: tinycolor2(stop.color !== undefined ? stop.color : stop),
+              color: tinycolor2__default['default'](stop.color !== undefined ? stop.color : stop),
               pos: i / (l - 1)
             };
           }
@@ -477,5 +477,5 @@
 
     return tinygradient;
 
-}));
+})));
 //# sourceMappingURL=browser.js.map
