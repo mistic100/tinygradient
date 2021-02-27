@@ -95,19 +95,16 @@ describe('TinyGradient', () => {
         assert.deepStrictEqual(res[1].toRgb(), res[3].toRgb(), 'black');
     });
 
-    it('should prevent consecutive position stops', () => {
-        assert.throws(() => {
-            tinygradient([{ color: 'black', pos: 0 }, { pos: 0.2 }, { pos: 0.4 }, { color: 'white', pos: 1 }]);
-        });
-        assert.throws(() => {
-            tinygradient([{ pos: 0.4 }, { color: 'white', pos: 1 }]);
-        });
-        assert.throws(() => {
-            tinygradient([{ color: 'black', pos: 0 }, { pos: 0.2 }]);
-        });
+    it('should allow positionned stops', () => {
+        let grad = tinygradient([{ color: 'black', pos: 0 }, { color: 'white', pos: 0.5 }]);
+
+        assert.deepStrictEqual(
+            grad.rgb(5).map((c) => c.toHex()),
+            ['000000', '808080', 'ffffff', 'ffffff', 'ffffff']
+        );
     });
 
-    it('should allow position stops', () => {
+    it('should allow position only stops', () => {
         // reference
         let grad1 = tinygradient([{ color: 'black', pos: 0 }, { color: 'white', pos: 1 }]);
 
@@ -125,12 +122,44 @@ describe('TinyGradient', () => {
         );
     });
 
-    it('should force RGB interpolation when a color is grey', () => {
-       let grad = tinygradient('rgba(86, 86, 86)', 'rgb(45, 163, 185)');
+    it('should prevent consecutive position stops', () => {
+        assert.throws(() => {
+            tinygradient([{ color: 'black', pos: 0 }, { pos: 0.2 }, { pos: 0.4 }, { color: 'white', pos: 1 }]);
+        });
+        assert.throws(() => {
+            tinygradient([{ pos: 0.4 }, { color: 'white', pos: 1 }]);
+        });
+        assert.throws(() => {
+            tinygradient([{ color: 'black', pos: 0 }, { pos: 0.2 }]);
+        });
+    });
 
-       assert.deepStrictEqual(
-           grad.hsv(5).map((c) => c.toHex()),
-           grad.rgb(5).map((c) => c.toHex()),
-       );
+    it('should prevent misordered stops', () => {
+        assert.throws(() => {
+            tinygradient([{ color: 'black', pos: 0.5 }, { color: 'white', pos: 0 }]);
+        });
+    });
+
+    it('should allow equal position stops', () => {
+        let grad = tinygradient([
+            { color: 'black', pos: 0 },
+            { color: 'white', pos: 0.5 },
+            { color: 'black', pos: 0.5 },
+            { color: 'white', pos: 1 },
+        ]);
+
+        assert.deepStrictEqual(
+            grad.rgb(8).map((c) => c.toHex()),
+            ['000000', '555555', 'aaaaaa', 'ffffff', '000000', '555555', 'aaaaaa', 'ffffff']
+        );
+    });
+
+    it('should force RGB interpolation when a color is grey', () => {
+        let grad = tinygradient('rgba(86, 86, 86)', 'rgb(45, 163, 185)');
+
+        assert.deepStrictEqual(
+            grad.hsv(5).map((c) => c.toHex()),
+            grad.rgb(5).map((c) => c.toHex()),
+        );
     });
 });

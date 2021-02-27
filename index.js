@@ -254,7 +254,7 @@ class TinyGradient {
                 if (stop.pos < 0 || stop.pos > 1) {
                     throw new Error('Color stops positions must be between 0 and 1');
                 }
-                else if (stop.pos <= p) {
+                else if (stop.pos < p) {
                     throw new Error('Color stops positions are not ordered');
                 }
                 p = stop.pos;
