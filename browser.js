@@ -1,5 +1,5 @@
 /*!
- * tinygradient (v1.1.3)
+ * tinygradient (v1.1.4)
  * @copyright 2014-2021 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
@@ -246,7 +246,9 @@
       return tinycolor2__default['default'](color);
     }
 
-    var TinyGradient = /*#__PURE__*/function () {
+    var TinyGradient =
+    /*#__PURE__*/
+    function () {
       /**
        * @param {StopInput[]|ColorInput[]} stops
        * @returns {TinyGradient}
@@ -285,7 +287,7 @@
 
             if (stop.pos < 0 || stop.pos > 1) {
               throw new Error('Color stops positions must be between 0 and 1');
-            } else if (stop.pos <= p) {
+            } else if (stop.pos < p) {
               throw new Error('Color stops positions are not ordered');
             }
 
