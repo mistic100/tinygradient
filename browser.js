@@ -1,5 +1,5 @@
 /*!
- * tinygradient (v1.1.4)
+ * tinygradient (v1.1.5)
  * @copyright 2014-2021 Damien "Mistic" Sorel <contact@git.strangeplanet.fr>
  * @licence MIT
  */
@@ -246,9 +246,7 @@
       return tinycolor2__default['default'](color);
     }
 
-    var TinyGradient =
-    /*#__PURE__*/
-    function () {
+    var TinyGradient = /*#__PURE__*/function () {
       /**
        * @param {StopInput[]|ColorInput[]} stops
        * @returns {TinyGradient}
@@ -465,7 +463,7 @@
     var tinygradient = function tinygradient(stops) {
       // varargs
       if (arguments.length === 1) {
-        if (!(arguments[0] instanceof Array)) {
+        if (!Array.isArray(arguments[0])) {
           throw new Error('"stops" is not an array');
         }
 
