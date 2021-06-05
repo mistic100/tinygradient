@@ -425,7 +425,7 @@ class TinyGradient {
 module.exports = function (stops) {
     // varargs
     if (arguments.length === 1) {
-        if (!(arguments[0] instanceof Array)) {
+        if (!Array.isArray(arguments[0])) {
             throw new Error('"stops" is not an array');
         }
         stops = arguments[0];
