@@ -1,10 +1,21 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "04:00"
-  open-pull-requests-limit: 10
-  assignees:
-  - mistic100
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+    assignees:
+      - mistic100
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    assignees:
+      - mistic100
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+  
