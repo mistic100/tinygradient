@@ -60,7 +60,8 @@
         <p class="lead text-muted">simple gradient generator</p>
         <p>
             <a href="https://github.com/mistic100/tinygradient" class="btn btn-primary btn-lg">
-                <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" width=32px> GitHub</a>
+                <img src="https://octodex.github.com/images/original.png" height="32" /> GitHub
+            </a>
         </p>
     </div>
 </section>
@@ -83,7 +84,7 @@
                 </li>
             </ul>
 
-            <button class="btn btn-primary mb-3" type="button" onclick="addColor()">new color</button>
+            <button class="btn btn-primary mb-3" type="button" id="add-color">new color</button>
 
             <div class="form-group form-inline">
                 <label for="steps">Steps</label>
@@ -125,15 +126,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-colorpicker@3.0.3/dist/js/bootstrap-colorpicker.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.1/tinycolor.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/randomcolor@0.5.4/randomColor.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/colorbrewer@1.3.0/index.min.js"></script>
-<script src="browser.js"></script>
-
 <script type="text/template" id="playground-item">
     <li class="list-group-item">
         <div class="form-row">
@@ -150,16 +142,37 @@
     </li>
 </script>
 
-<script>
-    var tpl = document.querySelector('#playground-item').innerHTML;
-    var list = $('#colors-list');
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-colorpicker@3.0.3/dist/js/bootstrap-colorpicker.min.js"></script>
 
-    var steps = 9;
+<script type="importmap">
+    {
+        "imports": {
+            "colorbrewer": "https://cdn.jsdelivr.net/npm/colorbrewer@1.5.9/+esm",
+            "randomcolor": "https://cdn.jsdelivr.net/npm/randomcolor/+esm",
+            "tinycolor2": "https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/esm/tinycolor.min.js",
+            "tinygradient": "./index.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import colorbrewer from 'colorbrewer';
+    import randomColor from 'randomcolor';
+    import tinycolor from 'tinycolor2';
+    import tinygradient from 'tinygradient';
+
+    const tpl = document.querySelector('#playground-item').innerHTML;
+    const list = $('#colors-list');
+
+    let steps = 9;
 
     function addColor(color) {
         color = color || randomColor();
 
-        var item = $(tpl);
+        const item = $(tpl);
         item.find('[name=color]').val(color).colorpicker();
 
         list.append(item);
@@ -168,7 +181,7 @@
     }
 
     function computePos() {
-        var pos = list.find('[name=pos]');
+        const pos = list.find('[name=pos]');
 
         pos.each(function(i) {
            this.value = i / (pos.length - 1);
@@ -176,14 +189,14 @@
     }
 
     function setOutputFromPlayground() {
-        var pos = list.find('[name=pos]')
+        const pos = list.find('[name=pos]')
             .map(function () {
-                var val = parseFloat(this.value);
+                const val = parseFloat(this.value);
                 return isNaN(val) ? undefined : val;
             })
             .get();
 
-        var colors = list.find('[name=color]')
+        const colors = list.find('[name=color]')
             .map(function () {
                 return this.value;
             })
@@ -199,13 +212,13 @@
     }
 
     function setOutput(colors, steps) {
-        var html = '';
+        let html = '';
 
         if (colors.length < 2) {
             html = 'Not enough colors';
         } else {
             try {
-                var grad = tinygradient(colors);
+                const grad = tinygradient(colors);
 
                 // CSS
                 html += '<li class="list-group-item"><h4>CSS reference</h4>';
@@ -215,7 +228,7 @@
                 // RGB
                 html += '<li class="list-group-item"><h4>RGB interpolation</h4>';
                 html += '<div class="out rgb">';
-                grad.rgb(steps).forEach(function (color) {
+                grad.rgb(steps).forEach((color) => {
                     html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
                 });
                 html += '</div></li>';
@@ -223,7 +236,7 @@
                 // RGB loop
                 html += '<li class="list-group-item"><h4>RGB loop</h4>';
                 html += '<div class="out rgb">';
-                grad.loop().rgb(Math.max(steps, colors.length * 2 - 1)).forEach(function (color) {
+                grad.loop().rgb(Math.max(steps, colors.length * 2 - 1)).forEach((color) => {
                     html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
                 });
                 html += '</div></li>';
@@ -231,7 +244,7 @@
                 // HSV
                 html += '<li class="list-group-item"><h4>HSV short interpolation</h4>';
                 html += '<div class="out hsv">';
-                grad.hsv(steps, 'short').forEach(function (color) {
+                grad.hsv(steps, 'short').forEach((color) => {
                     html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
                 });
                 html += '</div></li>';
@@ -239,7 +252,7 @@
                 // HSV2
                 html += '<li class="list-group-item"><h4>HSV long interpolation</h4>';
                 html += '<div class="out hsv2">';
-                grad.hsv(steps, 'long').forEach(function (color) {
+                grad.hsv(steps, 'long').forEach((color) => {
                     html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
                 });
                 html += '</div></li>';
@@ -280,24 +293,24 @@
 
     ////////////////////////////////////////
 
-    var cbScheme = 'BuGn';
-    var cbSteps = 9;
+    let cbScheme = 'BuGn';
+    let cbSteps = 9;
 
     function setCbOutput() {
-        var colors = list.find('[name=color]')
+        const colors = list.find('[name=color]')
             .map(function () {
                 return this.value;
             })
             .get();
 
-        var html = '';
+        let html = '';
 
-        var cbVariant = Math.min(cbSteps, Math.max.apply(null, Object.keys(colorbrewer[cbScheme])));
-        var grad = tinygradient(colorbrewer[cbScheme][cbVariant]);
+        const cbVariant = Math.min(cbSteps, Math.max.apply(null, Object.keys(colorbrewer[cbScheme])));
+        const grad = tinygradient(colorbrewer[cbScheme][cbVariant]);
 
         html += '<li class="list-group-item">';
         html += '<div class="out rgb">';
-        grad.rgb(cbSteps).forEach(function (color) {
+        grad.rgb(cbSteps).forEach((color) => {
             html += '<div style="background:' + color.toRgbString() + ';"><span>' + color.toHexString() + '</span></div>';
         });
         html += '</div></li>';
@@ -305,19 +318,19 @@
         document.querySelector('#cb-playground-output').innerHTML = html;
     }
 
-    (function() {
-        var html = '';
+    (() => {
+        let html = '';
 
-        $.each(colorbrewer.schemeGroups, function(group, schemes) {
+        $.each(colorbrewer.schemeGroups, (group, schemes) => {
            html+= '<optgroup label="' + group + '">';
-           schemes.forEach(function(scheme) {
+           schemes.forEach((scheme) => {
               html += '<option>' + scheme + '</option>';
            });
            html+= '</optgroup>';
         });
 
         $('[name=cb-scheme]').html(html);
-    }());
+    })();
 
     $('[name=cb-scheme]')
         .on('change', function () {
@@ -332,6 +345,8 @@
             setCbOutput();
         })
         .val(cbSteps);
+
+    $('#add-color').on('click', () => addColor());
 
     setCbOutput();
 </script>

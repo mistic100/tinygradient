@@ -1,4 +1,4 @@
-const tinycolor = require('tinycolor2');
+import tinycolor from 'tinycolor2';
 
 /**
  * @typedef {Object} TinyGradient.StopInput
@@ -291,7 +291,7 @@ class TinyGradient {
     reverse() {
         let stops = [];
 
-        this.stops.forEach(function (stop) {
+        this.stops.forEach((stop) => {
             stops.push({
                 color: stop.color,
                 pos  : 1 - stop.pos
@@ -392,7 +392,7 @@ class TinyGradient {
         direction = direction || (mode === 'linear' ? 'to right' : 'ellipse at center');
 
         let css = mode + '-gradient(' + direction;
-        this.stops.forEach(function (stop) {
+        this.stops.forEach((stop) => {
             css += ', ' + (stop.colorLess ? '' : stop.color.toRgbString() + ' ') + (stop.pos * 100) + '%';
         });
         css += ')';
@@ -422,7 +422,7 @@ class TinyGradient {
  * @param {StopInput[]|ColorInput[]|StopInput...|ColorInput...} stops
  * @returns {TinyGradient}
  */
-module.exports = function (stops) {
+function tinygradient(stops) {
     // varargs
     if (arguments.length === 1) {
         if (!Array.isArray(arguments[0])) {
@@ -435,4 +435,9 @@ module.exports = function (stops) {
     }
 
     return new TinyGradient(stops);
+}
+
+export {
+    tinygradient,
+    tinygradient as default,
 };

@@ -1,5 +1,5 @@
-const tinygradient = require('../index.js');
-const assert = require('assert');
+import tinygradient from '../index.js';
+import assert from 'assert';
 
 describe('TinyGradient', () => {
     it('should throw an error on invalid steps/colors number', () => {

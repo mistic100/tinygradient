@@ -29,10 +29,10 @@ The `tinygradient` constructor takes a list or an array of colors stops.
 
 ```javascript
 // using varargs
-var gradient = tinygradient('red', 'green', 'blue');
+const gradient = tinygradient('red', 'green', 'blue');
 
 // using array
-var gradient = tinygradient([
+const gradient = tinygradient([
   '#ff0000',
   '#00ff00',
   '#0000ff'
@@ -42,7 +42,7 @@ var gradient = tinygradient([
 The colors are parsed with TinyColor, [multiple formats are accepted](https://github.com/bgrins/TinyColor/blob/master/README.md#accepted-string-input).
 
 ```javascript
-var gradient = tinygradient([
+const gradient = tinygradient([
   tinycolor('#ff0000'),       // tinycolor object
   {r: 0, g: 255, b: 0},       // RGB object
   {h: 240, s: 1, v: 1, a: 1}, // HSVa object
@@ -54,7 +54,7 @@ var gradient = tinygradient([
 You can also specify the position of each color stop (between `0` and `1`). If no position is specified, stops are distributed equidistantly.
 
 ```javascript
-var gradient = tinygradient([
+const gradient = tinygradient([
   {color: '#d8e0de', pos: 0},
   {color: '#255B53', pos: 0.8},
   {color: '#000000', pos: 1}
@@ -68,19 +68,19 @@ Each method takes at least the number of desired steps.
 
 ```javascript
 // RGB interpolation
-var colorsRgb = gradient.rgb(9);
+const colorsRgb = gradient.rgb(9);
 ```
 ![rgb](https://raw.githubusercontent.com/mistic100/tinygradient/master/images/rgb.png)
 
 ```javascript
 // HSV clockwise interpolation
-var colorsHsv = gradient.hsv(9);
+const colorsHsv = gradient.hsv(9);
 ```
 ![hsv](https://raw.githubusercontent.com/mistic100/tinygradient/master/images/hsv.png)
 
 ```javascript
 // HSV counter-clockwise interpolation
-var colorsHsv = gradient.hsv(9, true);
+const colorsHsv = gradient.hsv(9, true);
 ```
 ![hsv2](https://raw.githubusercontent.com/mistic100/tinygradient/master/images/hsv2.png)
 
@@ -88,10 +88,10 @@ There are also two methods which will automatically choose between clockwise and
 
 ```javascript
 // HSV interpolation using shortest arc between colors
-var colorsHsv = gradient.hsv(9, 'short');
+const colorsHsv = gradient.hsv(9, 'short');
 
 // HSV interpolation using longest arc between colors
-var colorsHsv = gradient.hsv(9, 'long');
+const colorsHsv = gradient.hsv(9, 'long');
 ```
 
 Each method returns an array of TinyColor objects, [see available methods](https://github.com/bgrins/TinyColor/blob/master/README.md#methods).
@@ -102,10 +102,10 @@ The `css` method will output a valid W3C string (without vendors prefix) to use 
 
 ```javascript
 // linear gradient to right (default)
-var gradientStr = gradient.css();
+const gradientStr = gradient.css();
 
 // radial gradient ellipse at top left
-var gradientStr = gradient.css('radial', 'farthest-corner ellipse at top left');
+const gradientStr = gradient.css('radial', 'farthest-corner ellipse at top left');
 ```
 
 ### Get color at a specific position
@@ -125,7 +125,7 @@ colorAt55Percent = gradient.hsvAt(0.55);
 Returns a new instance of TinyGradient with reversed colors.
 
 ```javascript
-var reversedGradient = gradient.reverse();
+const reversedGradient = gradient.reverse();
 ```
 
 ### Loop the gradient
@@ -133,7 +133,7 @@ var reversedGradient = gradient.reverse();
 Returns a new instance of TinyGradient with looped colors.
 
 ```javascript
-var loopedGradient = gradient.loop();
+const loopedGradient = gradient.loop();
 ```
 
 ### Position-only stops
@@ -141,7 +141,7 @@ var loopedGradient = gradient.loop();
 I is possible to define stops with the `pos` property only and no `color`. This allows to define the position of the mid-point between the previous and the next stop.
 
 ```js
-var gradient = tinygradient([
+const gradient = tinygradient([
   {color: 'black', pos: 0},
   {pos: 0.8}, // #808080 will be at 80% instead of 50%
   {color: 'white', pos: 1}
