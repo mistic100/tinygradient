@@ -97,5 +97,5 @@ declare namespace tinygradient {
 }
 
 declare const tinygradient: tinygradient.Constructor;
-export = tinygradient;
-export as namespace tinygradient;
+export default tinygradient;
+export { tinygradient };
